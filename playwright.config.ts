@@ -14,7 +14,7 @@ export default defineConfig({
         ['list']
     ],
     use: {
-        baseURL: 'https://testabc12.automation.beta.vidizmo.com/',
+        baseURL: 'http://20250611-6-scmwvahh.t6.beta.vidizmo.com/home',
         trace: 'retain-on-failure',
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
