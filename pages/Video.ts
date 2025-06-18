@@ -5,7 +5,6 @@ import { Selectors } from '../constants/Selectors';
 export class Video extends BasePage {
     constructor(page: Page) {
         super(page);
-        //Locators will come here 
     }
 
     async clickVideo(titlePart: string, index: number = 0): Promise<void> {

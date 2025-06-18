@@ -48,7 +48,19 @@ export class HomePage extends BasePage {
         return await this.isElementVisible(locator);
     }
 
+    async clickMediaButton(): Promise<void> { 
+        const mediaButton = this.page.locator(Selectors.Main_PAGE.Add_Media);
+        await this.waitHelper.waitForElementToBeVisible(mediaButton);
+        await this.clickElement(mediaButton, 'Media Button');
+    }
+
+    async validateMediaPageLoaded(expectedTitle: string): Promise<void> {
+        await expect(this.page).toHaveTitle(expectedTitle);
+        this.logger.info(`Media page loaded with correct title: ${expectedTitle}`);
+    }
+
     async logout(): Promise<void> {
+
         this.logger.info('Starting logout process');
         
         // Click profile toggle
