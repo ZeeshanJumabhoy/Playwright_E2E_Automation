@@ -64,16 +64,16 @@ test.describe('Searching and playing video with Authentication', () => {
 
     });
 
+    test('Should logout from the account successfully', async () => {
+        await test.step('Perform logout', async () => {
+            await homePage.logout();
+        });
 
-    // test('Should logout from the account successfully', async () => {
-    //     await test.step('Perform logout', async () => {
-    //         await homePage.logout();
-    //     });
+        await test.step('Validate logout success', async () => {
+            await homePage.validateLogoutSuccess();
+        });
+    })
 
-    //     await test.step('Validate logout success', async () => {
-    //         await homePage.validateLogoutSuccess();
-    //     });
-    // })
 
     test.afterAll(async () => {
         await page.close();
