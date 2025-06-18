@@ -18,7 +18,7 @@ export class LoginPage extends BasePage {
         this.logger.info(`Logging in user: ${email}`);
         
         await this.fillInput(this.emailInput, email, 'Email Address');
-        await this.fillInput(this.passwordInput, password, 'Password');
+        await this.fillInput(this.passwordInput, password, 'Password'); 
         await this.clickElement(this.signInButton, 'Sign In Button');
         
         this.logger.info('Login process completed');

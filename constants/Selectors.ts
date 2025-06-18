@@ -6,7 +6,13 @@ export const Selectors = {
     },
     LOGIN_PAGE: {
         EMAIL_INPUT: '#EmailAddress',
-        PASSWORD_INPUT: '#Password', 
+        PASSWORD_INPUT: '#Password',
         SIGNIN_BUTTON: '#Signin'
+    },
+
+    Main_PAGE: {
+        Search_INPUT: 'input[data-e2e-input="SearchForMedia"]',
+        Search_Button: 'button[data-e2e-btn="SearchForMediaBtn"]',
+        Video_Link:  (text: string, index: number = 0) => `a:has-text("${text}"):nth(${index})`,
     }
 } as const;

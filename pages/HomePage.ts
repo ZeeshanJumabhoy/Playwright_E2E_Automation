@@ -8,12 +8,16 @@ export class HomePage extends BasePage {
     private readonly signInButton: Locator;
     private readonly profileToggle: Locator;
     private readonly signOutButton: Locator;
+    private readonly inputSearchbar: Locator;
+    private readonly clickSearchbutton: Locator;
 
     constructor(page: Page) {
         super(page);
         this.signInButton = this.page.locator(Selectors.NAVIGATION.SIGN_IN_BUTTON);
         this.profileToggle = this.page.locator(Selectors.NAVIGATION.PROFILE_TOGGLE);
         this.signOutButton = this.page.locator(Selectors.NAVIGATION.SIGN_OUT_BUTTON);
+        this.inputSearchbar = this.page.locator(Selectors.Main_PAGE.Search_INPUT);
+        this.clickSearchbutton = this.page.locator(Selectors.Main_PAGE.Search_Button);
     }
 
     async open(): Promise<void> {
@@ -31,6 +35,17 @@ export class HomePage extends BasePage {
 
     async isUserLoggedIn(): Promise<boolean> {
         return await this.isElementVisible(this.profileToggle);
+    }
+
+    async Search(search: string): Promise<void>{
+        await this.fillInput(this.inputSearchbar,search,"Entering the input to search the video");
+        await this.clickElement(this.clickSearchbutton, 'Clicking the serach button');
+    }
+
+    async isVideoVisible(titlePart: string, index: number = 0): Promise<boolean> {
+        const locatorStr = Selectors.Main_PAGE.Video_Link(titlePart, index);
+        const locator = this.page.locator(locatorStr);
+        return await this.isElementVisible(locator);
     }
 
     async logout(): Promise<void> {

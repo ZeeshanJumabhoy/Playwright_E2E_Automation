@@ -4,4 +4,9 @@ export class TestData {
         password: 'Admin@123',
         expectedTitle: 'Home - 20250611-6-scmwvahh'
     };
+
+    static readonly Video = {
+        VideoTitle: 'cheyenne drone',
+        VideoPartialtext:'cheyenne',
+    };
 }
