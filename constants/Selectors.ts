@@ -13,6 +13,10 @@ export const Selectors = {
     Main_PAGE: {
         Search_INPUT: 'input[data-e2e-input="SearchForMedia"]',
         Search_Button: 'button[data-e2e-btn="SearchForMediaBtn"]',
-        Video_Link:  (text: string, index: number = 0) => `a:has-text("${text}"):nth(${index})`,
+        Video_Link: (text: string) => `a:has-text("${text}")`
+    },
+
+    Video_Page:{
+        Video_Heading: (text: string) => `h3:has-text("${text}")`
     }
 } as const;

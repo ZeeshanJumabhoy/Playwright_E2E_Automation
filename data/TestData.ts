@@ -7,6 +7,6 @@ export class TestData {
 
     static readonly Video = {
         VideoTitle: 'cheyenne drone',
-        VideoPartialtext:'cheyenne',
+        VideoPartialtext:'cheyenne drone',
     };
 }

@@ -43,7 +43,7 @@ export class HomePage extends BasePage {
     }
 
     async isVideoVisible(titlePart: string, index: number = 0): Promise<boolean> {
-        const locatorStr = Selectors.Main_PAGE.Video_Link(titlePart, index);
+        const locatorStr = Selectors.Main_PAGE.Video_Link(titlePart);
         const locator = this.page.locator(locatorStr);
         return await this.isElementVisible(locator);
     }
