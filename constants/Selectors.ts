@@ -17,6 +17,9 @@ export const Selectors = {
     },
 
     Video_Page:{
-        Video_Heading: (text: string) => `h3:has-text("${text}")`
+        Video_Heading: (text: string) => `h3:has-text("${text}")`,
+        ThumbsUpButton: 'button[data-e2e-link="MashupDetailLikeMedia"]',
+        HeartUpButton: 'a[data-e2e-link="MashupDetailAddToFavourite"]'
+
     }
 } as const;
