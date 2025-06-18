@@ -1,6 +1,5 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './base/BasePage';
-import { IUser } from '../interfaces/IUser';
 import { Selectors } from '../constants/Selectors';
 
 export class LoginPage extends BasePage {
@@ -15,11 +14,11 @@ export class LoginPage extends BasePage {
         this.signInButton = this.page.locator(Selectors.LOGIN_PAGE.SIGNIN_BUTTON);
     }
 
-    async login(user: IUser): Promise<void> {
-        this.logger.info(`Logging in user: ${user.email}`);
+    async login(email: string, password: string): Promise<void> {
+        this.logger.info(`Logging in user: ${email}`);
         
-        await this.fillInput(this.emailInput, user.email, 'Email Address');
-        await this.fillInput(this.passwordInput, user.password, 'Password');
+        await this.fillInput(this.emailInput, email, 'Email Address');
+        await this.fillInput(this.passwordInput, password, 'Password');
         await this.clickElement(this.signInButton, 'Sign In Button');
         
         this.logger.info('Login process completed');

@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 import { HomePage } from '../../pages/HomePage';
-import { LoginPage } from '../../pages//LoginPage';
-import { UserCredentials } from '../../data/UserCredentials';
+import { LoginPage } from '../../pages/LoginPage';
+import { TestData } from '../../data/TestData';
 
 test.describe('Authentication Flow', () => {
     let page: Page;
@@ -14,36 +14,32 @@ test.describe('Authentication Flow', () => {
         loginPage = new LoginPage(page);
         
         // Navigate to home page and validate
-        await homePage.navigateToHomePage();
-        await homePage.validateHomePageLoaded(UserCredentials.TEST_USER);
+        await homePage.open();
+        await homePage.validateHomePageLoaded(TestData.USER.expectedTitle);
     });
 
     test('Should login to the account successfully', async () => {
         await test.step('Navigate to login page', async () => {
-            const navigation = homePage.getNavigation();
-            await navigation.clickSignIn();
+            await homePage.clickSignIn();
         });
 
         await test.step('Perform login', async () => {
-            await loginPage.login(UserCredentials.TEST_USER);
+            await loginPage.login(TestData.USER.email, TestData.USER.password);
         });
 
         await test.step('Validate login success', async () => {
-            const navigation = homePage.getNavigation();
-            const isLoggedIn = await navigation.isUserLoggedIn();
+            const isLoggedIn = await homePage.isUserLoggedIn();
             expect(isLoggedIn).toBeTruthy();
         });
     });
 
     test('Should logout from the account successfully', async () => {
         await test.step('Perform logout', async () => {
-            const navigation = homePage.getNavigation();
-            await navigation.logout();
+            await homePage.logout();
         });
 
         await test.step('Validate logout success', async () => {
-            const navigation = homePage.getNavigation();
-            await navigation.validateLogoutSuccess();
+            await homePage.validateLogoutSuccess();
         });
     });
 

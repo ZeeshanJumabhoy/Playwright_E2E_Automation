@@ -38,4 +38,13 @@ export abstract class BasePage {
     async getPageTitle(): Promise<string> {
         return await this.page.title();
     }
+
+    protected async isElementVisible(locator: Locator, timeout: number = 3000): Promise<boolean> {
+        try {
+            await locator.waitFor({ state: 'visible', timeout });
+            return true;
+        } catch {
+            return false;
+        }
+    }
 }
