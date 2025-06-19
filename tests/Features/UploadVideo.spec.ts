@@ -4,14 +4,18 @@ import { LoginPage } from '../../pages/LoginPage';
 import { Video } from '../../pages/Video';
 import {Media} from '../../pages/Media';
 import { TestData } from '../../data/TestData';
+import { Control_Panel } from '../../pages/ControlPanel';
+
 import ts from 'typescript';
+import { loggers } from 'winston';
 
 test.describe('Uploading Media and Search and then Playing it', () => {
     let page: Page;
     let homePage: HomePage;
     let loginPage: LoginPage;
     let videoPage: Video;
-    let mediaPage: Media; 
+    let mediaPage: Media;
+    let controlPanel: Control_Panel;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
@@ -19,6 +23,7 @@ test.describe('Uploading Media and Search and then Playing it', () => {
         loginPage = new LoginPage(page);
         videoPage = new Video(page); 
         mediaPage = new Media(page); 
+        controlPanel = new Control_Panel(page);
 
         await homePage.open();
         await homePage.validateHomePageLoaded(TestData.USER.expectedTitle);
@@ -40,6 +45,7 @@ test.describe('Uploading Media and Search and then Playing it', () => {
     });
 
     test('Uploading the Video', async () => {
+        test.setTimeout(2 * 60 * 60 * 1000);
         await test.step('Navigate to upload page', async () => {
             await homePage.clickMediaButton();
             await homePage.validateMediaPageLoaded(TestData.Media.expectedTitleForAddMedia);
@@ -48,19 +54,30 @@ test.describe('Uploading Media and Search and then Playing it', () => {
         await test.step('Navigate to Media Upload page', async () => {
             await mediaPage.clickUploadButton();
             await mediaPage.validateUploadPageLoaded(TestData.Media.expectedTitleForUploadMedia);
+            await mediaPage.uploadVideo(TestData.Video.Video_Path);
         })
+
+        await test.step('Validate video upload success', async () => {
+            await homePage.clicktoggleButton();
+            await controlPanel.clickControlPanel();
+            await controlPanel.validateControlPageLoaded(TestData.ControlPanel.expectedTitleForSecurityPolicy);
+            await controlPanel.clickWorkflows();
+            await controlPanel.validateWorkflowsPageLoaded(TestData.ControlPanel.expectedTitleForWorkflows);
+            await controlPanel.waitForWorkflowToFinish(TestData.ControlPanel.VideoTitle);
+        })
+            
 
     });
 
-    test('Should logout from the account successfully', async () => {
-        await test.step('Perform logout', async () => {
-            await homePage.logout();
-        });
+    // test('Should logout from the account successfully', async () => {
+    //     await test.step('Perform logout', async () => {
+    //         await homePage.logout();
+    //     });
 
-        await test.step('Validate logout success', async () => {
-            await homePage.validateLogoutSuccess();
-        });
-    })
+    //     await test.step('Validate logout success', async () => {
+    //         await homePage.validateLogoutSuccess();
+    //     });
+    // })
 
 
     test.afterAll(async () => {

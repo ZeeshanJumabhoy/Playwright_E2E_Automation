@@ -18,4 +18,14 @@ export class Media extends BasePage {
         await expect(this.page).toHaveTitle(expectedTitle);
         this.logger.info(`Media page loaded with correct title: ${expectedTitle}`);
     }
+
+    async uploadVideo(filePath: string): Promise<void> {
+        const uploadInput = this.page.locator(Selectors.Main_PAGE.AddVideo);
+        await this.waitHelper.waitForElementToBeVisible(uploadInput);
+       // await this.clickElement(uploadInput, 'Click here to upload video file');
+        const uploadInput2 = this.page.locator(Selectors.Main_PAGE.uploadInput);
+       // await this.waitHelper.waitForElementToBeVisible(uploadInput2);
+        await uploadInput2.setInputFiles(filePath);
+        this.logger.info(`Video file uploaded: ${filePath}`);
+    }
 }

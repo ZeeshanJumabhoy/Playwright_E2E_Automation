@@ -93,4 +93,10 @@ export class HomePage extends BasePage {
             throw new Error('Logout validation failed - Sign In button not visible');
         }
     }
+
+    async clicktoggleButton(): Promise<void> { 
+        const toggleButton = this.page.locator(Selectors.Main_PAGE.toggle_Button);
+        await this.waitHelper.waitForElementToBeVisible(toggleButton);
+        await this.clickElement(toggleButton, 'Toggle Button');
+    }
 }
