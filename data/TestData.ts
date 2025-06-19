@@ -6,9 +6,12 @@ export class TestData {
     };
 
     static readonly Video = {
-        VideoTitle: 'SampleVideo_1280x720_1mb',
-        VideoPartialtext:'SampleVideo_1280x720_1',
-        Video_Path: "C:\\Users\\Zeeshan.mustafa\\Downloads\\SampleVideo_1280x720_1mb.mp4"
+        VideoTitle: 'SampleVideo_640x360_1mb',
+        VideoPartialtext:'SampleVideo_640x360_1',
+        Video_Path: "C:\\Users\\Zeeshan.mustafa\\Downloads\\SampleVideo_1280x720_1mb.mp4",
+        Video_Comment: "My First Comment on Video",
+        Video_Comment_Search: "asd",
+        New_Comment:"My First eDIT Comment on Video",
     };
 
     static readonly Media = {

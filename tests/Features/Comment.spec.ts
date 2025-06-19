@@ -25,10 +25,9 @@ test.describe('Searching and playing video with Authentication', () => {
             await homePage.clickSignIn();
         });
 
-        await test.step('Perform login', async () => {
+        // await test.step('Perform login', async () => {
             await loginPage.login(TestData.USER.email, TestData.USER.password);
-        });
-
+        // });
         await test.step('Validate login success', async () => {
             const isLoggedIn = await homePage.isUserLoggedIn();
             expect(isLoggedIn).toBeTruthy();
@@ -64,15 +63,32 @@ test.describe('Searching and playing video with Authentication', () => {
 
     });
 
-    test('Should logout from the account successfully', async () => {
-        await test.step('Perform logout', async () => {
-            await homePage.logout();
+    test('Comment, Edit, Delete on Video/Post', async()=>{
+
+        await test.step('commenting on the video', async () => {
+            await videoPage.CommentingOnVideo(TestData.Video.Video_Comment);
         });
 
-        await test.step('Validate logout success', async () => {
-            await homePage.validateLogoutSuccess();
+        await test.step('Searching the comment whether is or not', async () => {
+            await videoPage.SearchComment_Visible(TestData.Video.Video_Comment_Search);
         });
+
+        //await videoPage.SearchComment_VisibleAndEdit(TestData.Video.Video_Comment_Search,TestData.Video.New_Comment);
+
+        await videoPage.DeleteComment(TestData.Video.Video_Comment_Search);
+
     })
+
+
+    // test('Should logout from the account successfully', async () => {
+    //     await test.step('Perform logout', async () => {
+    //         await homePage.logout();
+    //     });
+
+    //     await test.step('Validate logout success', async () => {
+    //         await homePage.validateLogoutSuccess();
+    //     });
+    // })
 
     test.afterAll(async () => {
         await page.close();

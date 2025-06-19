@@ -28,7 +28,14 @@ export const Selectors = {
     Video_Page: {
         Video_Heading: (text: string) => `h3:has-text("${text}")`,
         ThumbsUpButton: 'button[data-e2e-link="MashupDetailLikeMedia"]',
-        HeartUpButton: 'a[data-e2e-link="MashupDetailAddToFavourite"]'
+        HeartUpButton: 'a[data-e2e-link="MashupDetailAddToFavourite"]',
+        comment: 'textarea[data-e2e-textarea="commentContent"]',
+        Comment_Button: 'button[data-e2e-btn="Post"]',
+        Comment_Section: 'div[data-e2e-div="allComments"]',
+        Comment_Text: (text: string) => `div[data-e2e-div="${text}"]`,
+        Edit_Button:'button[data-e2e-link="editComment"]',
+        Update_Button: 'button[data-e2e-btn="Update"]',
+        Delete_Button: 'button[data-e2e-link="deleteComment"]',
 
     },
 
