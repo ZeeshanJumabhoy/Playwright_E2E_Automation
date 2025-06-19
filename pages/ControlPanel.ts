@@ -34,8 +34,8 @@ export class Control_Panel extends BasePage {
     async waitForWorkflowToFinish(videoTitle: string): Promise<void> {
         this.logger.info(`Waiting for video "${videoTitle}" to finish processing...`);
     
-        const pollingInterval = 30000; 
-        const maxRetries = 1000; 
+        const pollingInterval = 15000; // 15 seconds
+        const maxRetries = 1000;
     
         for (let attempt = 1; attempt <= maxRetries; attempt++) {
             await this.page.reload();
@@ -59,18 +59,14 @@ export class Control_Panel extends BasePage {
     
             if (stateText?.trim() === 'Finished') {
                 this.logger.info(`Video "${videoTitle}" has finished processing.`);
-                return; // Test passes
+                return;
             }
-    
-            // Optional: If you want to throw error on failure of progress
-            // if (stateText?.trim() === 'Error') throw new Error('Video processing failed');
     
             await this.page.waitForTimeout(pollingInterval);
         }
     
         throw new Error(`Video "${videoTitle}" did not finish processing after ${maxRetries * (pollingInterval / 1000)} seconds`);
-    }
-    
+    }    
 
 }
 

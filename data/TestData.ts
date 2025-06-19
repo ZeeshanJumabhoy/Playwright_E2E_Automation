@@ -6,9 +6,9 @@ export class TestData {
     };
 
     static readonly Video = {
-        VideoTitle: 'cheyenne drone',
-        VideoPartialtext:'cheyenne drone',
-        Video_Path: "C:\\Users\\Zeeshan.mustafa\\Downloads\\SampleVideo_360x240_1mb.mp4"
+        VideoTitle: 'SampleVideo_1280x720_1mb',
+        VideoPartialtext:'SampleVideo_1280x720_1',
+        Video_Path: "C:\\Users\\Zeeshan.mustafa\\Downloads\\SampleVideo_1280x720_1mb.mp4"
     };
 
     static readonly Media = {
@@ -19,6 +19,6 @@ export class TestData {
     static readonly ControlPanel = {
         expectedTitleForSecurityPolicy: 'Security Policy - 20250618-44-gcajqykf',
         expectedTitleForWorkflows: 'Workflow - 20250618-44-gcajqykf',
-        VideoTitle: 'SampleVideo_360x240_1mb',
+        VideoTitle: 'SampleVideo_1280x720_1mb',
     }
 }

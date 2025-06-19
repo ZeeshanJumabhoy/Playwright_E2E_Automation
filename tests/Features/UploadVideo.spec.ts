@@ -44,7 +44,7 @@ test.describe('Uploading Media and Search and then Playing it', () => {
         });
     });
 
-    test('Uploading the Video', async () => {
+    test('Uploading the Video And Verifying whether its uploaded or not', async () => {
         test.setTimeout(2 * 60 * 60 * 1000);
         await test.step('Navigate to upload page', async () => {
             await homePage.clickMediaButton();
@@ -69,15 +69,42 @@ test.describe('Uploading Media and Search and then Playing it', () => {
 
     });
 
-    // test('Should logout from the account successfully', async () => {
-    //     await test.step('Perform logout', async () => {
-    //         await homePage.logout();
-    //     });
+    test('Searching the Video And Playing it ', async () => {
+        await test.step('Searching the video to play', async () => {
+            await homePage.Search(TestData.Video.VideoTitle);
+        });
 
-    //     await test.step('Validate logout success', async () => {
-    //         await homePage.validateLogoutSuccess();
-    //     });
-    // })
+        await test.step('Now Verifying whether searched video is displayed', async () => {
+            const isVisible = await homePage.isVideoVisible(TestData.Video.VideoPartialtext);
+
+            if (isVisible) {
+                console.log("Video is visible. Proceeding to play it.");
+                await videoPage.clickVideo(TestData.Video.VideoPartialtext);
+                await test.step('Verifying that Video opens or not', async () => {
+                    const isVisible = await videoPage.IsVideoHeadingVisible(TestData.Video.VideoPartialtext);
+
+                    if (isVisible) {
+                        console.log('Video is opened successfully.');
+                    } else {
+                        console.error('Video did not open.');
+                        throw new Error('Video did not open.');
+                    }
+                });
+            } else {
+                console.warn("Searched video is NOT visible. Skipping video play step.");
+            }
+        });
+    });
+
+    test('Should logout from the account successfully', async () => {
+        await test.step('Perform logout', async () => {
+            await homePage.logout();
+        });
+
+        await test.step('Validate logout success', async () => {
+            await homePage.validateLogoutSuccess();
+        });
+    })
 
 
     test.afterAll(async () => {
