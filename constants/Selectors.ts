@@ -36,9 +36,8 @@ export const Selectors = {
         Edit_Button:'button[data-e2e-link="editComment"]',
         Update_Button: 'button[data-e2e-btn="Update"]',
         Delete_Button: 'button[data-e2e-link="deleteComment"]',
-        Comment_TextSpan: '[data-e2e-span="comment"]'
-
-
+        Comment_TextSpan: '[data-e2e-span="comment"]',
+        Click_Video: '',
     },
 
     Control_Panel:{

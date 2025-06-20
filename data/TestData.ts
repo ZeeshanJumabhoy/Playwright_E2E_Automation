@@ -8,7 +8,8 @@ export class TestData {
     static readonly Video = {
         VideoTitle: 'SampleVideo_720x480_2mb',
         VideoPartialtext:'SampleVideo_720x480_2',
-        Video_Path: `C:\\Users\\Zeeshan.mustafa\\Downloads\\SampleVideo_720x480_2mb.mp4`,
+        VideoPartialtext2: 'SampleVideo_640x360_2mb',
+        Video_Path: `C:\\Users\\Zeeshan.mustafa\\Downloads\\SampleVideo_640x360_2mb.mp4`,
         Video_Comment: "My First Comment on Video",
         Video_Comment_Search: "bob",
         New_Comment:"Hello World",
@@ -23,6 +24,6 @@ export class TestData {
     static readonly ControlPanel = {
         expectedTitleForSecurityPolicy: 'Security Policy - 20250618-44-gcajqykf',
         expectedTitleForWorkflows: 'Workflow - 20250618-44-gcajqykf',
-        VideoTitle: 'SampleVideo_720x480_2mb',
+        VideoTitle2:'SampleVideo_640x360_2mb'
     }
 }

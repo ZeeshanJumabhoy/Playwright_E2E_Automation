@@ -34,39 +34,39 @@ export class HomePage extends BasePage {
         await this.navigateTo(AppConstants.BASE_URL);
     }
 
-    async validateHomePageLoaded(expectedTitle: string): Promise<void> {
-        await expect(this.page).toHaveTitle(expectedTitle);
-        this.logger.info(`Home page loaded with correct title: ${expectedTitle}`);
-    }
+    // async validateHomePageLoaded(expectedTitle: string): Promise<void> {
+    //     await expect(this.page).toHaveTitle(expectedTitle);
+    //     this.logger.info(`Home page loaded with correct title: ${expectedTitle}`);
+    // }
 
     async clickSignIn(): Promise<void> {
         await this.clickElement(this.signInButton.nth(0), 'Sign In Button');
     }
 
-    async isUserLoggedIn(): Promise<boolean> {
-        return await this.isElementVisible(this.profileToggle);
-    }
+    // async isUserLoggedIn(): Promise<boolean> {
+    //     return await this.isElementVisible(this.profileToggle);
+    // }
 
     async Search(search: string): Promise<void> {
         await this.fillInput(this.inputSearchbar, search, 'Entering the input to search the video');
         await this.clickElement(this.clickSearchbutton, 'Clicking the serach button');
     }
 
-    async isVideoVisible(titlePart: string, index: number = 0): Promise<boolean> {
-        const locatorStr = Selectors.Main_PAGE.Video_Link(titlePart);
-        const locator = this.page.locator(locatorStr);
-        return await this.isElementVisible(locator);
-    }
+    // async isVideoVisible(titlePart: string, index: number = 0): Promise<boolean> {
+    //     const locatorStr = Selectors.Main_PAGE.Video_Link(titlePart);
+    //     const locator = this.page.locator(locatorStr);
+    //     return await this.isElementVisible(locator);
+    // }
 
     async clickMediaButton(): Promise<void> {
         await this.waitHelper.waitForElementToBeVisible(this.mediaButton);
         await this.clickElement(this.mediaButton, 'Media Button');
     }
 
-    async validateMediaPageLoaded(expectedTitle: string): Promise<void> {
-        await expect(this.page).toHaveTitle(expectedTitle);
-        this.logger.info(`Media page loaded with correct title: ${expectedTitle}`);
-    }
+    // async validateMediaPageLoaded(expectedTitle: string): Promise<void> {
+    //     await expect(this.page).toHaveTitle(expectedTitle);
+    //     this.logger.info(`Media page loaded with correct title: ${expectedTitle}`);
+    // }
 
     async logout(): Promise<void> {
         this.logger.info('Starting logout process');
@@ -78,18 +78,18 @@ export class HomePage extends BasePage {
         this.logger.info('Logout completed');
     }
 
-    async validateLogoutSuccess(): Promise<void> {
-        const count = await this.signInButton.count();
+    // async validateLogoutSuccess(): Promise<void> {
+    //     const count = await this.signInButton.count();
 
-        if (count > 0) {
-            const signInBtn = this.signInButton.nth(0);
-            await expect(signInBtn).toBeVisible();
-            this.logger.info('Logout validation successful - Sign In button visible');
-        } else {
-            this.logger.warn('Sign In button not found after logout');
-            throw new Error('Logout validation failed - Sign In button not visible');
-        }
-    }
+    //     if (count > 0) {
+    //         const signInBtn = this.signInButton.nth(0);
+    //         await expect(signInBtn).toBeVisible();
+    //         this.logger.info('Logout validation successful - Sign In button visible');
+    //     } else {
+    //         this.logger.warn('Sign In button not found after logout');
+    //         throw new Error('Logout validation failed - Sign In button not visible');
+    //     }
+    // }
 
     async clicktoggleButton(): Promise<void> {
         await this.waitHelper.waitForElementToBeVisible(this.toggleButton);

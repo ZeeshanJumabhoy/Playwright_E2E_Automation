@@ -8,7 +8,7 @@ export default defineConfig({
     },
     fullyParallel: false, // Keep false for now since you're using beforeAll
     retries: 1,
-    workers: 1,
+    //workers: 1,
     reporter: [
         ['html', { outputFolder: 'reports/html-report' }],
         ['list']

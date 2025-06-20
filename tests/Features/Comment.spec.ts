@@ -3,94 +3,85 @@ import { HomePage } from '../../pages/HomePage';
 import { LoginPage } from '../../pages/LoginPage';
 import { Video } from '../../pages/Video';
 import { TestData } from '../../data/TestData';
+import { Selectors } from '../../constants/Selectors';
+import { AssertHelper } from '../../utils/AssertHelper';
 
 test.describe('Searching and playing video with Authentication', () => {
     let page: Page;
     let homePage: HomePage;
     let loginPage: LoginPage;
     let videoPage: Video;
+    let assert: AssertHelper;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
         homePage = new HomePage(page);
         loginPage = new LoginPage(page);
         videoPage = new Video(page); // <-- FIXED
+        assert = new AssertHelper(page);
 
         await homePage.open();
-        await homePage.validateHomePageLoaded(TestData.USER.expectedTitle);
+        await assert.toHaveTitle(TestData.USER.expectedTitle);
     });
-
+    
     test('Should login to the account successfully', async () => {
-        await test.step('Navigate to login page', async () => {
-            await homePage.clickSignIn();
-        });
-
-        // await test.step('Perform login', async () => {
-            await loginPage.login(TestData.USER.email, TestData.USER.password);
-        // });
-        await test.step('Validate login success', async () => {
-            const isLoggedIn = await homePage.isUserLoggedIn();
-            expect(isLoggedIn).toBeTruthy();
-        });
+        await homePage.clickSignIn();
+        await loginPage.login(TestData.USER.email, TestData.USER.password);
+        await assert.toBeVisible(page.locator(Selectors.NAVIGATION.PROFILE_TOGGLE), 'Profile Toggle after login');
     });
 
-    test('Searching the Video And Playing it ', async () => {
-        await test.step('Searching the video to play', async () => {
-            await homePage.Search(TestData.Video.VideoTitle);
-        });
+    test('Searching the Video And Playing it', async () => {
+        await homePage.Search(TestData.Video.VideoTitle);
 
-        await test.step('Now Verifying whether searched video is displayed', async () => {
-            const isVisible = await homePage.isVideoVisible(TestData.Video.VideoPartialtext);
+        const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext));
+        await assert.toBeVisible(videoLocator, 'Video link from search results');
 
-            if (isVisible) {
-                console.log("Video is visible. Proceeding to play it.");
-                await videoPage.clickVideo(TestData.Video.VideoPartialtext);
-                await test.step('Verifying that Video opens or not', async () => {
-                    const isVisible = await videoPage.IsVideoHeadingVisible(TestData.Video.VideoPartialtext);
+        await videoPage.clickVideo(TestData.Video.VideoPartialtext);
 
-                    if (isVisible) {
-                        console.log('Video is opened successfully.');
-                    } else {
-                        console.error('Video did not open.');
-                        throw new Error('Video did not open.');
-                    }
-                });
-            } else {
-                console.warn("Searched video is NOT visible. Skipping video play step.");
-            }
-        });
-
-
+        const headingLocator = page.locator(Selectors.Video_Page.Video_Heading(TestData.Video.VideoPartialtext));
+        await assert.toBeVisible(headingLocator, 'Video heading after clicking');
     });
 
-    test('Comment, Edit, Delete on Video/Post', async()=>{
 
-        // await test.step('commenting on the video', async () => {
-        //     await videoPage.CommentingOnVideo(TestData.Video.Video_Comment);
-        // });
+    test('Comment on Video/Post', async () => {
 
-        await test.step('Searching the comment whether is or not', async () => {
-            await videoPage.SearchComment_Visible(TestData.Video.Video_Comment_Search);
+        await test.step('commenting on the video', async () => {
+            await videoPage.CommentingOnVideo(TestData.Video.Video_Comment);
         });
 
-        await videoPage.SearchComment_VisibleAndEdit(TestData.Video.Video_Comment_Search,TestData.Video.New_Comment);
+        await test.step('Searching the comment whether it is visible or not', async () => {
+            const commentSelector = Selectors.Video_Page.Comment_Text(TestData.Video.Video_Comment_Search);
+            const commentLocator = page.locator(commentSelector);
+            await assert.toBeVisible(commentLocator.nth(1), `Comment "${TestData.Video.Video_Comment_Search}"`);
+        });
 
-        await videoPage.SearchComment_VisibleAndDelete(TestData.Video.Video_Comment_Delete);
+        await test.step('Editing the comment and verifying update', async () => {
+            await videoPage.SearchComment_VisibleAndEdit(
+                TestData.Video.Video_Comment_Search,
+                TestData.Video.New_Comment
+            );
+
+            const updatedCommentLocator = page.locator(
+                Selectors.Video_Page.Comment_Text(TestData.Video.New_Comment)
+            );
+            await assert.toBeVisible(updatedCommentLocator, `Updated comment: "${TestData.Video.New_Comment}"`);
+        });
+
+        await test.step('Deleting the comment and verifying removal', async () => {
+            await videoPage.SearchComment_VisibleAndDelete(TestData.Video.Video_Comment_Delete);
+
+            const deletedCommentLocator = page.locator(
+                Selectors.Video_Page.Comment_Text(TestData.Video.Video_Comment_Delete)
+            );
+            await expect(deletedCommentLocator, `Deleted comment "${TestData.Video.Video_Comment_Delete}" should be gone`).toHaveCount(0);
+        });
 
     })
 
 
-    // test('Should logout from the account successfully', async () => {
-    //     await test.step('Perform logout', async () => {
-    //         await homePage.logout();
-    //     });
 
-    //     await test.step('Validate logout success', async () => {
-    //         await homePage.validateLogoutSuccess();
-    //     });
-    // })
-
-    test.afterAll(async () => {
-        await page.close();
+    test('Should logout from the account successfully', async () => {
+        await homePage.logout();
+        await assert.toBeVisible(page.locator(Selectors.NAVIGATION.SIGN_IN_BUTTON).first(), 'Sign In Button after logout');
     });
 });
