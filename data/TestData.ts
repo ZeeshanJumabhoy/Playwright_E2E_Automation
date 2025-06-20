@@ -6,12 +6,13 @@ export class TestData {
     };
 
     static readonly Video = {
-        VideoTitle: 'SampleVideo_640x360_1mb',
-        VideoPartialtext:'SampleVideo_640x360_1',
-        Video_Path: "C:\\Users\\Zeeshan.mustafa\\Downloads\\SampleVideo_1280x720_1mb.mp4",
+        VideoTitle: 'SampleVideo_720x480_2mb',
+        VideoPartialtext:'SampleVideo_720x480_2',
+        Video_Path: `C:\\Users\\Zeeshan.mustafa\\Downloads\\SampleVideo_720x480_2mb.mp4`,
         Video_Comment: "My First Comment on Video",
-        Video_Comment_Search: "asd",
-        New_Comment:"My First eDIT Comment on Video",
+        Video_Comment_Search: "bob",
+        New_Comment:"Hello World",
+        Video_Comment_Delete:"Hello World"
     };
 
     static readonly Media = {
@@ -22,6 +23,6 @@ export class TestData {
     static readonly ControlPanel = {
         expectedTitleForSecurityPolicy: 'Security Policy - 20250618-44-gcajqykf',
         expectedTitleForWorkflows: 'Workflow - 20250618-44-gcajqykf',
-        VideoTitle: 'SampleVideo_1280x720_1mb',
+        VideoTitle: 'SampleVideo_720x480_2mb',
     }
 }

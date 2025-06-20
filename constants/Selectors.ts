@@ -36,11 +36,16 @@ export const Selectors = {
         Edit_Button:'button[data-e2e-link="editComment"]',
         Update_Button: 'button[data-e2e-btn="Update"]',
         Delete_Button: 'button[data-e2e-link="deleteComment"]',
+        Comment_TextSpan: '[data-e2e-span="comment"]'
+
 
     },
 
     Control_Panel:{
         workflows_Button: 'a[data-e2e-link="ControlPanelWorkflow"][href="/control-panel/workflow-queue"]',
-
+        Video_row_locator: (videoTitle: string) => `tr[data-e2e-tr-object-title="${videoTitle}"]`,
+        state_locator: '[data-e2e-td="workflow-state"]',
+        percentage_locator: '[data-e2e-td="percentage"]',
+        
     }
 } as const;

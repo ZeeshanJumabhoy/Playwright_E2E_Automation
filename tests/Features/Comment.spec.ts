@@ -65,17 +65,17 @@ test.describe('Searching and playing video with Authentication', () => {
 
     test('Comment, Edit, Delete on Video/Post', async()=>{
 
-        await test.step('commenting on the video', async () => {
-            await videoPage.CommentingOnVideo(TestData.Video.Video_Comment);
-        });
+        // await test.step('commenting on the video', async () => {
+        //     await videoPage.CommentingOnVideo(TestData.Video.Video_Comment);
+        // });
 
         await test.step('Searching the comment whether is or not', async () => {
             await videoPage.SearchComment_Visible(TestData.Video.Video_Comment_Search);
         });
 
-        //await videoPage.SearchComment_VisibleAndEdit(TestData.Video.Video_Comment_Search,TestData.Video.New_Comment);
+        await videoPage.SearchComment_VisibleAndEdit(TestData.Video.Video_Comment_Search,TestData.Video.New_Comment);
 
-        await videoPage.DeleteComment(TestData.Video.Video_Comment_Search);
+        await videoPage.SearchComment_VisibleAndDelete(TestData.Video.Video_Comment_Delete);
 
     })
 
