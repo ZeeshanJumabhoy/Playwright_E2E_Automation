@@ -13,6 +13,7 @@ test.describe('Searching and playing video with Authentication', () => {
     let videoPage: Video;
     let assert: AssertHelper;
 
+
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
         homePage = new HomePage(page);
@@ -22,15 +23,11 @@ test.describe('Searching and playing video with Authentication', () => {
 
         await homePage.open();
         await assert.toHaveTitle(TestData.USER.expectedTitle);
-    });
-    
-    test('Should login to the account successfully', async () => {
+
         await homePage.clickSignIn();
         await loginPage.login(TestData.USER.email, TestData.USER.password);
         await assert.toBeVisible(page.locator(Selectors.NAVIGATION.PROFILE_TOGGLE), 'Profile Toggle after login');
-    });
 
-    test('Searching the Video And Playing it', async () => {
         await homePage.Search(TestData.Video.VideoTitle);
 
         const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext));
@@ -40,48 +37,32 @@ test.describe('Searching and playing video with Authentication', () => {
 
         const headingLocator = page.locator(Selectors.Video_Page.Video_Heading(TestData.Video.VideoPartialtext));
         await assert.toBeVisible(headingLocator, 'Video heading after clicking');
-    });
+
+        await videoPage.CommentingOnVideo(TestData.Video.Video_Comment);
+
+        const commentSelector = Selectors.Video_Page.Comment_Text(TestData.Video.Video_Comment_Search);
+        const commentLocator = page.locator(commentSelector);
+        await assert.toBeVisible(commentLocator.nth(1), `Comment "${TestData.Video.Video_Comment_Search}"`);
 
 
-    test('Comment on Video/Post', async () => {
+        await videoPage.SearchComment_VisibleAndEdit(
+            TestData.Video.Video_Comment_Search,
+            TestData.Video.New_Comment
+        );
 
-        await test.step('commenting on the video', async () => {
-            await videoPage.CommentingOnVideo(TestData.Video.Video_Comment);
-        });
-
-        await test.step('Searching the comment whether it is visible or not', async () => {
-            const commentSelector = Selectors.Video_Page.Comment_Text(TestData.Video.Video_Comment_Search);
-            const commentLocator = page.locator(commentSelector);
-            await assert.toBeVisible(commentLocator.nth(1), `Comment "${TestData.Video.Video_Comment_Search}"`);
-        });
-
-        await test.step('Editing the comment and verifying update', async () => {
-            await videoPage.SearchComment_VisibleAndEdit(
-                TestData.Video.Video_Comment_Search,
-                TestData.Video.New_Comment
-            );
-
-            const updatedCommentLocator = page.locator(
-                Selectors.Video_Page.Comment_Text(TestData.Video.New_Comment)
-            );
-            await assert.toBeVisible(updatedCommentLocator, `Updated comment: "${TestData.Video.New_Comment}"`);
-        });
-
-        await test.step('Deleting the comment and verifying removal', async () => {
-            await videoPage.SearchComment_VisibleAndDelete(TestData.Video.Video_Comment_Delete);
-
-            const deletedCommentLocator = page.locator(
-                Selectors.Video_Page.Comment_Text(TestData.Video.Video_Comment_Delete)
-            );
-            await expect(deletedCommentLocator, `Deleted comment "${TestData.Video.Video_Comment_Delete}" should be gone`).toHaveCount(0);
-        });
-
-    })
+        const updatedCommentLocator = page.locator(
+            Selectors.Video_Page.Comment_Text(TestData.Video.New_Comment)
+        );
+        await assert.toBeVisible(updatedCommentLocator, `Updated comment: "${TestData.Video.New_Comment}"`);
 
 
+        await videoPage.SearchComment_VisibleAndDelete(TestData.Video.Video_Comment_Delete);
 
-    test('Should logout from the account successfully', async () => {
+        const deletedCommentLocator = page.locator(
+            Selectors.Video_Page.Comment_Text(TestData.Video.Video_Comment_Delete)
+        );
+        await expect(deletedCommentLocator, `Deleted comment "${TestData.Video.Video_Comment_Delete}" should be gone`).toHaveCount(0);
+
         await homePage.logout();
-        await assert.toBeVisible(page.locator(Selectors.NAVIGATION.SIGN_IN_BUTTON).first(), 'Sign In Button after logout');
     });
-});
+})

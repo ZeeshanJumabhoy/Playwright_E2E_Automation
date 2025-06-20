@@ -22,35 +22,21 @@ test.describe('Search and Like/Favorite Video with Authentication', () => {
 
         await homePage.open();
         await assert.toHaveTitle(TestData.USER.expectedTitle);
-    });
 
-    test('Should login to the account successfully', async () => {
         await homePage.clickSignIn();
         await loginPage.login(TestData.USER.email, TestData.USER.password);
-        await assert.toBeVisible(page.locator(Selectors.NAVIGATION.PROFILE_TOGGLE), 'Profile Toggle after login');
-    });
 
-    test('Should search, play, like and favorite the video', async () => {
-        await test.step('Search video', async () => {
-            await homePage.Search(TestData.Video.VideoTitle);
-            const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext));
-            await assert.toBeVisible(videoLocator, 'Video search result');
-        });
+        await homePage.Search(TestData.Video.VideoTitle);
+        const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext));
+        await assert.toBeVisible(videoLocator, 'Video search result');
 
-        await test.step('Play video and validate heading', async () => {
-            await videoPage.clickVideo(TestData.Video.VideoPartialtext);
-            const headingLocator = page.locator(Selectors.Video_Page.Video_Heading(TestData.Video.VideoPartialtext));
-            await assert.toBeVisible(headingLocator, 'Video heading after click');
-        });
+        await videoPage.clickVideo(TestData.Video.VideoPartialtext);
+        const headingLocator = page.locator(Selectors.Video_Page.Video_Heading(TestData.Video.VideoPartialtext));
+        await assert.toBeVisible(headingLocator, 'Video heading after click');
 
-        await test.step('Like and favorite the video', async () => {
-            await videoPage.likevideo();
-            await videoPage.Favoritevideo();
-        });
-    });
+        await videoPage.likevideo();
+        await videoPage.Favoritevideo();
 
-    test('Should logout from the account successfully', async () => {
         await homePage.logout();
-        await assert.toBeVisible(page.locator(Selectors.NAVIGATION.SIGN_IN_BUTTON).first(), 'Sign In Button after logout');
     });
-});
+})

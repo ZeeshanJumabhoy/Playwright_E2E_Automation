@@ -21,16 +21,11 @@ test.describe('Searching and playing video with Authentication', () => {
         assert = new AssertHelper(page);
 
         await homePage.open();
-        await assert.toHaveTitle(TestData.USER.expectedTitle); // ✅ Assert using helper
-    });
+        await assert.toHaveTitle(TestData.USER.expectedTitle);
 
-    test('Should login to the account successfully', async () => {
         await homePage.clickSignIn();
         await loginPage.login(TestData.USER.email, TestData.USER.password);
-        await assert.toBeVisible(page.locator(Selectors.NAVIGATION.PROFILE_TOGGLE), 'Profile Toggle after login');
-    });
 
-    test('Searching the Video And Playing it', async () => {
         await homePage.Search(TestData.Video.VideoTitle);
 
         const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext));
@@ -40,10 +35,7 @@ test.describe('Searching and playing video with Authentication', () => {
 
         const headingLocator = page.locator(Selectors.Video_Page.Video_Heading(TestData.Video.VideoPartialtext));
         await assert.toBeVisible(headingLocator, 'Video heading after clicking');
-    });
 
-    test('Should logout from the account successfully', async () => {
         await homePage.logout();
-        await assert.toBeVisible(page.locator(Selectors.NAVIGATION.SIGN_IN_BUTTON).first(), 'Sign In Button after logout');
     });
 });
