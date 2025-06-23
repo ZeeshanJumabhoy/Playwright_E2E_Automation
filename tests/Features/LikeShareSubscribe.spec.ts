@@ -1,42 +1,25 @@
-import { test, Page } from '@playwright/test';
-import { HomePage } from '../../pages/HomePage';
-import { LoginPage } from '../../pages/LoginPage';
-import { Video } from '../../pages/Video';
+import { test, expect } from '../../utils/fixtures'; // uses all globalized page objects
 import { TestData } from '../../data/TestData';
 import { Selectors } from '../../constants/Selectors';
-import { AssertHelper } from '../../utils/AssertHelper';
 
 test.describe('Search and Like/Favorite Video with Authentication', () => {
-    let page: Page;
-    let homePage: HomePage;
-    let loginPage: LoginPage;
-    let videoPage: Video;
-    let assert: AssertHelper;
+  test('should search, play, like, and favorite a video', async ({ page, homePage, loginPage, videoPage, assert }) => {
+    await homePage.clickSignIn();
+    await loginPage.login(TestData.USER.email, TestData.USER.password);
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-        homePage = new HomePage(page);
-        loginPage = new LoginPage(page);
-        videoPage = new Video(page);
-        assert = new AssertHelper(page);
+    await homePage.Search(TestData.Video.VideoTitle);
 
-        await homePage.open();
-        await assert.toHaveTitle(TestData.USER.expectedTitle);
+    const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext));
+    await assert.toBeVisible(videoLocator, 'Video search result');
 
-        await homePage.clickSignIn();
-        await loginPage.login(TestData.USER.email, TestData.USER.password);
+    await videoPage.clickVideo(TestData.Video.VideoPartialtext);
 
-        await homePage.Search(TestData.Video.VideoTitle);
-        const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext));
-        await assert.toBeVisible(videoLocator, 'Video search result');
+    const headingLocator = page.locator(Selectors.Video_Page.Video_Heading(TestData.Video.VideoPartialtext));
+    await assert.toBeVisible(headingLocator, 'Video heading after click');
 
-        await videoPage.clickVideo(TestData.Video.VideoPartialtext);
-        const headingLocator = page.locator(Selectors.Video_Page.Video_Heading(TestData.Video.VideoPartialtext));
-        await assert.toBeVisible(headingLocator, 'Video heading after click');
+    await videoPage.likevideo();
+    await videoPage.Favoritevideo();
 
-        await videoPage.likevideo();
-        await videoPage.Favoritevideo();
-
-        await homePage.logout();
-    });
-})
+    await homePage.logout();
+  });
+});

@@ -1,70 +1,48 @@
-import { test, Page } from '@playwright/test';
-import { HomePage } from '../../pages/HomePage';
-import { LoginPage } from '../../pages/LoginPage';
-import { Video } from '../../pages/Video';
-import { Media } from '../../pages/Media';
-import { Control_Panel } from '../../pages/ControlPanel';
+import { test, expect } from '../../utils/fixtures'; 
 import { TestData } from '../../data/TestData';
 import { Selectors } from '../../constants/Selectors';
-import { AssertHelper } from '../../utils/AssertHelper';
-
 
 test.describe('Uploading Media, Searching and Playing it', () => {
-    let page: Page;
-    let homePage: HomePage;
-    let loginPage: LoginPage;
-    let videoPage: Video;
-    let mediaPage: Media;
-    let controlPanel: Control_Panel;
-    let assert: AssertHelper;
-    
-    test.setTimeout(2 * 60 * 60 * 1000); 
+  test.setTimeout(2 * 60 * 60 * 1000);
 
-    test.beforeAll(async ({ browser ,}) => {
-        page = await browser.newPage();
-        homePage = new HomePage(page);
-        loginPage = new LoginPage(page);
-        videoPage = new Video(page);
-        mediaPage = new Media(page);
-        controlPanel = new Control_Panel(page);
-        assert = new AssertHelper(page);
+  test('should pass login and logout flow', async ({
+    page,
+    homePage,
+    loginPage,
+    mediaPage,
+    videoPage,
+    controlPanel,
+    assert
+  }) => {
+    await homePage.clickSignIn();
+    await loginPage.login(TestData.USER.email, TestData.USER.password);
 
-        await homePage.open();
-        await assert.toHaveTitle(TestData.USER.expectedTitle);
+    await homePage.clickMediaButton();
+    await assert.toHaveTitle(TestData.Media.expectedTitleForAddMedia);
 
-        await homePage.clickSignIn();
-        await loginPage.login(TestData.USER.email, TestData.USER.password);
+    await mediaPage.clickUploadButton();
+    await assert.toHaveTitle(TestData.Media.expectedTitleForUploadMedia);
+    await mediaPage.uploadVideo(TestData.Video.Video_Path);
 
+    await homePage.clicktoggleButton();
+    await controlPanel.clickControlPanel();
+    await assert.toHaveTitle(TestData.ControlPanel.expectedTitleForSecurityPolicy);
 
-        await homePage.clickMediaButton();
-        await assert.toHaveTitle(TestData.Media.expectedTitleForAddMedia);
+    await controlPanel.clickWorkflows();
+    await assert.toHaveTitle(TestData.ControlPanel.expectedTitleForWorkflows);
 
+    await controlPanel.waitForWorkflowToFinish(TestData.ControlPanel.VideoTitle2);
 
-        await mediaPage.clickUploadButton();
-        await assert.toHaveTitle(TestData.Media.expectedTitleForUploadMedia);
-        await mediaPage.uploadVideo(TestData.Video.Video_Path);
+    await homePage.Search(TestData.ControlPanel.VideoTitle2);
 
+    const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext));
+    await assert.toBeVisible(videoLocator, 'Video link from search results');
 
-        await homePage.clicktoggleButton();
-        await controlPanel.clickControlPanel();
-        await assert.toHaveTitle(TestData.ControlPanel.expectedTitleForSecurityPolicy);
+    await videoPage.clickVideo(TestData.Video.VideoPartialtext2);
 
-        await controlPanel.clickWorkflows();
-        await assert.toHaveTitle(TestData.ControlPanel.expectedTitleForWorkflows);
+    const headingLocator = page.locator(Selectors.Video_Page.Video_Heading(TestData.Video.VideoPartialtext2));
+    await assert.toBeVisible(headingLocator, 'Video heading after clicking');
 
-        await controlPanel.waitForWorkflowToFinish(TestData.ControlPanel.VideoTitle2);
-
-
-        await homePage.Search(TestData.ControlPanel.VideoTitle2);
-
-        const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext));
-        await assert.toBeVisible(videoLocator, 'Video link from search results');
-
-        await videoPage.clickVideo(TestData.Video.VideoPartialtext2);
-
-        const headingLocator = page.locator(Selectors.Video_Page.Video_Heading(TestData.Video.VideoPartialtext2));
-        await assert.toBeVisible(headingLocator, 'Video heading after clicking');
-
-        await homePage.logout();
-    });
-})
+    await homePage.logout();
+  });
+});
