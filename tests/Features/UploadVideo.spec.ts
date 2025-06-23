@@ -1,6 +1,7 @@
 import { test, expect } from '../../utils/fixtures'; 
 import { TestData } from '../../data/TestData';
-import { Selectors } from '../../constants/Selectors';
+import { VideoPageSelectors } from '../../constants/VideoPageSelectors';
+import { HomePageSelectors } from '../../constants/HomePageSelectors';
 
 test.describe('Uploading Media, Searching and Playing it', () => {
   test.setTimeout(2 * 60 * 60 * 1000);
@@ -14,7 +15,7 @@ test.describe('Uploading Media, Searching and Playing it', () => {
     controlPanel,
     assert
   }) => {
-    
+
     await loginPage.login(TestData.USER.email, TestData.USER.password);
 
     await homePage.clickMediaButton();
@@ -35,12 +36,12 @@ test.describe('Uploading Media, Searching and Playing it', () => {
 
     await homePage.Search(TestData.ControlPanel.VideoTitle2);
 
-    const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext2));
+    const videoLocator = page.locator(HomePageSelectors.Video_Link(TestData.Video.VideoPartialtext2));
     await assert.toBeVisible(videoLocator, 'Video link from search results');
 
     await videoPage.clickVideo(TestData.Video.VideoPartialtext2);
 
-    const headingLocator = page.locator(Selectors.Video_Page.Video_Heading(TestData.Video.VideoPartialtext2));
+    const headingLocator = page.locator(VideoPageSelectors.Video_Heading(TestData.Video.VideoPartialtext2));
     await assert.toBeVisible(headingLocator, 'Video heading after clicking');
 
     await homePage.logout();

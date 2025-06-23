@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './base/BasePage';
-import { Selectors } from '../constants/Selectors';
+import { HomePageSelectors } from '../constants/HomePageSelectors';
 
 export class Media extends BasePage {
     // Locators
@@ -10,9 +10,10 @@ export class Media extends BasePage {
 
     constructor(page: Page) {
         super(page);
-        this.uploadVideoButton = page.locator(Selectors.Main_PAGE.UploadVideo);
-        this.addVideoButton = page.locator(Selectors.Main_PAGE.AddVideo);
-        this.uploadInputField = page.locator(Selectors.Main_PAGE.uploadInput);
+        this.uploadVideoButton = page.locator(HomePageSelectors.UploadVideo);
+        this.addVideoButton = page.locator(HomePageSelectors.AddVideo);
+        this.uploadInputField = page.locator(HomePageSelectors.uploadInput);
+        
     }
 
     async clickUploadButton(): Promise<void> { 

@@ -1,7 +1,8 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './base/BasePage';
-import { Selectors } from '../constants/Selectors';
 import { AppConstants } from '../constants/AppConstants';
+import { SharedSelectors } from '../constants/SharedSelectors';
+import { HomePageSelectors } from '../constants/HomePageSelectors';
 
 export class HomePage extends BasePage {
     // Navigation Elements
@@ -19,15 +20,15 @@ export class HomePage extends BasePage {
         super(page);
 
         // Navigation
-        this.signInButton = this.page.locator(Selectors.NAVIGATION.SIGN_IN_BUTTON);
-        this.profileToggle = this.page.locator(Selectors.NAVIGATION.PROFILE_TOGGLE);
-        this.signOutButton = this.page.locator(Selectors.NAVIGATION.SIGN_OUT_BUTTON);
+        this.signInButton = this.page.locator(SharedSelectors.NAVIGATION.SIGN_IN_BUTTON);
+        this.profileToggle = this.page.locator(SharedSelectors.NAVIGATION.PROFILE_TOGGLE);
+        this.signOutButton = this.page.locator(SharedSelectors.NAVIGATION.SIGN_OUT_BUTTON);
 
         // Main Page
-        this.inputSearchbar = this.page.locator(Selectors.Main_PAGE.Search_INPUT);
-        this.clickSearchbutton = this.page.locator(Selectors.Main_PAGE.Search_Button);
-        this.mediaButton = this.page.locator(Selectors.Main_PAGE.Add_Media);
-        this.toggleButton = this.page.locator(Selectors.Main_PAGE.toggle_Button);
+        this.inputSearchbar = this.page.locator(HomePageSelectors.Search_INPUT);
+        this.clickSearchbutton = this.page.locator(HomePageSelectors.Search_Button);
+        this.mediaButton = this.page.locator(HomePageSelectors.Add_Media);
+        this.toggleButton = this.page.locator(HomePageSelectors.toggle_Button);
     }
 
     async open(): Promise<void> {

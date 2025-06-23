@@ -1,7 +1,8 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './base/BasePage';
-import { Selectors } from '../constants/Selectors';
 import { TestData } from '../data/TestData';
+import { VideoPageSelectors } from '../constants/VideoPageSelectors';
+import { HomePageSelectors } from '../constants/HomePageSelectors';
 
 export class Video extends BasePage {
 
@@ -13,15 +14,15 @@ export class Video extends BasePage {
 
     constructor(page: Page) {
         super(page);
-        this.thumbsUp = page.locator(Selectors.Video_Page.ThumbsUpButton);
-        this.heartUp = page.locator(Selectors.Video_Page.HeartUpButton);
-        this.commentting = page.locator(Selectors.Video_Page.comment).nth(1);
-        this.buttonLocator = page.locator(Selectors.Video_Page.Comment_Button);
-        this.playvideo = page.locator(Selectors.Video_Page.Play_Video);
+        this.thumbsUp = page.locator(VideoPageSelectors.ThumbsUpButton);
+        this.heartUp = page.locator(VideoPageSelectors.HeartUpButton);
+        this.commentting = page.locator(VideoPageSelectors.comment).nth(1);
+        this.buttonLocator = page.locator(VideoPageSelectors.Comment_Button);
+        this.playvideo = page.locator(VideoPageSelectors.Play_Video);
     }
 
     async clickVideo(titlePart: string, index: number = 0): Promise<void> {
-        const locatorStr = Selectors.Main_PAGE.Video_Link(titlePart);
+        const locatorStr = HomePageSelectors.Video_Link(titlePart);
         const locator = this.page.locator(locatorStr);
         await this.clickElement(locator, 'Playing video');
     }
@@ -139,7 +140,7 @@ export class Video extends BasePage {
         const editButton = targetCommentRow.locator('[data-e2e-link="editComment"]');
         await editButton.click({ force: true });
 
-        const textarea = targetCommentRow.locator(Selectors.Video_Page.comment);
+        const textarea = targetCommentRow.locator(VideoPageSelectors.comment);
         await textarea.fill(newComment);
 
         const newCommentBlock = this.page.locator(`div[data-e2e-div="${newComment}"]`);

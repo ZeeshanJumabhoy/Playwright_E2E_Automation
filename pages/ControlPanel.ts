@@ -1,6 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './base/BasePage';
-import { Selectors } from '../constants/Selectors';
+import { SharedSelectors } from '../constants/SharedSelectors';
+import { HomePageSelectors } from '../constants/HomePageSelectors';
 
 export class Control_Panel extends BasePage {
     // Locators
@@ -13,10 +14,10 @@ export class Control_Panel extends BasePage {
         super(page);
 
         // Control Panel Elements
-        this.controlPanelButton = this.page.locator(Selectors.Main_PAGE.controlPanel_Button);
-        this.workflowsButton = this.page.locator(Selectors.Control_Panel.workflows_Button);
-        this.statelocator= this.page.locator(Selectors.Control_Panel.state_locator);
-        this.percentageLocator = this.page.locator(Selectors.Control_Panel.percentage_locator);
+        this.controlPanelButton = this.page.locator(HomePageSelectors.controlPanel_Button);
+        this.workflowsButton = this.page.locator(SharedSelectors.CONTROL_PANEL.workflows_Button);
+        this.statelocator = this.page.locator(SharedSelectors.CONTROL_PANEL.state_locator);
+        this.percentageLocator = this.page.locator(SharedSelectors.CONTROL_PANEL.percentage_locator);
     }
 
     async clickControlPanel(): Promise<void> { 
@@ -37,6 +38,8 @@ export class Control_Panel extends BasePage {
         this.logger.info(`Media page loaded with correct title: ${expectedTitle}`);
     }
 
+
+    //Chnage to made in thsi as well
     async waitForWorkflowToFinish(videoTitle: string): Promise<void> {
         this.logger.info(`Waiting for video "${videoTitle}" to finish processing...`);
 
@@ -46,7 +49,7 @@ export class Control_Panel extends BasePage {
         for (let attempt = 1; attempt <= maxRetries; attempt++) {
             await this.page.reload();
 
-            const rowLocator = this.page.locator(Selectors.Control_Panel.Video_row_locator(videoTitle));
+            const rowLocator = this.page.locator(SharedSelectors.CONTROL_PANEL.Video_row_locator(videoTitle));
             const isRowVisible = await rowLocator.isVisible();
 
             if (!isRowVisible) {

@@ -1,6 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './base/BasePage';
-import { Selectors } from '../constants/Selectors';
+import { LoginPageSelectors } from '../constants/LoginPageSelectors';
+import { SharedSelectors } from '../constants/SharedSelectors';
 import { HomePage } from './HomePage';
 
 export class LoginPage extends BasePage {
@@ -11,15 +12,13 @@ export class LoginPage extends BasePage {
 
     constructor(page: Page) {
         super(page);
-        this.emailInput = this.page.locator(Selectors.LOGIN_PAGE.EMAIL_INPUT);
-        this.passwordInput = this.page.locator(Selectors.LOGIN_PAGE.PASSWORD_INPUT);
-        this.signInButton = this.page.locator(Selectors.LOGIN_PAGE.SIGNIN_BUTTON);
-        this.signInProfile = this.page.locator(Selectors.NAVIGATION.SIGN_IN_BUTTON)
-        //homePage: HomePage(page); // Initialize homePage with the current page context
+        this.emailInput = this.page.locator(LoginPageSelectors.EMAIL_INPUT);
+        this.passwordInput = this.page.locator(LoginPageSelectors.PASSWORD_INPUT);
+        this.signInButton = this.page.locator(LoginPageSelectors.SIGNIN_BUTTON);
+        this.signInProfile = this.page.locator(SharedSelectors.NAVIGATION.SIGN_IN_BUTTON);
     }
 
     async login(email: string, password: string): Promise<void> {
-
         await this.clickElement(this.signInProfile, 'Sign In Button');
         this.logger.info(`Logging in user: ${email}`);
         
