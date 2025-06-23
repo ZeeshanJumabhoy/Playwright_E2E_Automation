@@ -4,10 +4,11 @@ import { Selectors } from '../../constants/Selectors';
 
 test.describe('Searching, commenting and editing/deleting comment on video', () => {
   test('should play video, add/edit/delete comment', async ({ page, homePage, loginPage, videoPage, assert }) => {
-    await homePage.clickSignIn();
+
+    
     await loginPage.login(TestData.USER.email, TestData.USER.password);
     await assert.toBeVisible(page.locator(Selectors.NAVIGATION.PROFILE_TOGGLE), 'Profile Toggle after login');
-
+    //uploadFile
     await homePage.Search(TestData.Video.VideoTitle);
 
     const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext));

@@ -1,10 +1,10 @@
-import { test, expect } from '../../utils/fixtures'; // uses all globalized page objects
+import { test, expect } from '../../utils/fixtures';
 import { TestData } from '../../data/TestData';
 import { Selectors } from '../../constants/Selectors';
 
 test.describe('Search and Like/Favorite Video with Authentication', () => {
   test('should search, play, like, and favorite a video', async ({ page, homePage, loginPage, videoPage, assert }) => {
-    await homePage.clickSignIn();
+
     await loginPage.login(TestData.USER.email, TestData.USER.password);
 
     await homePage.Search(TestData.Video.VideoTitle);
@@ -17,8 +17,25 @@ test.describe('Search and Like/Favorite Video with Authentication', () => {
     const headingLocator = page.locator(Selectors.Video_Page.Video_Heading(TestData.Video.VideoPartialtext));
     await assert.toBeVisible(headingLocator, 'Video heading after click');
 
-    await videoPage.likevideo();
+
+    // const likeBeforeLocator = page.locator(Selectors.Video_Page.Like_Count_Before);
+    // const beforeLikeCount = Number(await likeBeforeLocator.getAttribute('data-count') || '0');
+    // console.log(beforeLikeCount);
+
+
+    // await videoPage.likevideo();
+
+    // const likeAfterLocator = page.locator(Selectors.Video_Page.Like_Count_After);
+    // await assert.toBeVisible(likeAfterLocator, 'Like span updated');
+
+    // const afterLikeCount = Number(await likeAfterLocator.getAttribute('data-count') || '0');
+    // console.log(afterLikeCount);
+
+    // expect(afterLikeCount).toBeGreaterThan(beforeLikeCount);
+
     await videoPage.Favoritevideo();
+    const HeartUpButton= page.locator(Selectors.Video_Page.HeartUpButton);
+    await assert.toHaveAttribute(HeartUpButton.locator('span'), 'title', TestData.Video.Add_To_Favorite, 'Favorite button before click');
 
     await homePage.logout();
   });

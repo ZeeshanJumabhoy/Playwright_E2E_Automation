@@ -40,7 +40,7 @@ export class HomePage extends BasePage {
     // }
 
     async clickSignIn(): Promise<void> {
-        await this.clickElement(this.signInButton.nth(0), 'Sign In Button');
+        await this.clickElement(this.signInButton, 'Sign In Button');
     }
 
     // async isUserLoggedIn(): Promise<boolean> {
@@ -49,7 +49,7 @@ export class HomePage extends BasePage {
 
     async Search(search: string): Promise<void> {
         await this.fillInput(this.inputSearchbar, search, 'Entering the input to search the video');
-        await this.clickElement(this.clickSearchbutton, 'Clicking the serach button');
+        await this.clickElement(this.clickSearchbutton, 'Clicking the search button');
     }
 
     // async isVideoVisible(titlePart: string, index: number = 0): Promise<boolean> {

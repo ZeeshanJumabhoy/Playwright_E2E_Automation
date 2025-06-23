@@ -1,6 +1,6 @@
 export const Selectors = {
     NAVIGATION: {
-        SIGN_IN_BUTTON: 'button[data-e2e-link="LoginSignInButton"]',
+        SIGN_IN_BUTTON: 'button[data-e2e-link="LoginSignInButton"] >>nth=0',
         PROFILE_TOGGLE: 'button[data-e2e-link="toggleProfilePane"]',
         SIGN_OUT_BUTTON: 'button[data-e2e-link="LogOut"]'
     },
@@ -28,8 +28,10 @@ export const Selectors = {
     Video_Page: {
         Video_Heading: (text: string) => `h3:has-text("${text}")`,
         ThumbsUpButton: 'button[data-e2e-link="MashupDetailLikeMedia"]',
+        Like_Count_Before: 'span[data-e2e-span*="MashupDetailLikeMedia"] >>nth=0',
+        Like_Count_After: 'span[data-e2e-span*="MashupDetailUnlikeMedia"] >>nth=0',
         HeartUpButton: 'a[data-e2e-link="MashupDetailAddToFavourite"]',
-        comment: 'textarea[data-e2e-textarea="commentContent"]',
+        comment: 'textarea[data-e2e-textarea="commentContent"]  >>nth=0',
         Comment_Button: 'button[data-e2e-btn="Post"]',
         Comment_Section: 'div[data-e2e-div="allComments"]',
         Comment_Text: (text: string) => `div[data-e2e-div="${text}"]`,
@@ -37,7 +39,7 @@ export const Selectors = {
         Update_Button: 'button[data-e2e-btn="Update"]',
         Delete_Button: 'button[data-e2e-link="deleteComment"]',
         Comment_TextSpan: '[data-e2e-span="comment"]',
-        Click_Video: '',
+        Play_Video: 'vjs-big-play-button',
     },
 
     Control_Panel:{

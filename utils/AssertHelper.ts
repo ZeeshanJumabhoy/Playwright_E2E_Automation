@@ -9,10 +9,14 @@ export class AssertHelper {
         this.logger = new Logger('AssertHelper');
     }
 
-    async toBeVisible(locator: Locator, description?: string, timeout?: number) {
-        await expect(locator, `${description || 'Element'} should be visible`).toBeVisible({ timeout: timeout || this.defaultTimeout });
+    async toBeVisible(input: Locator | string, description?: string, timeout?: number) {
+        const locator = typeof input === 'string' ? this.page.locator(input) : input;
+        await expect(locator, `${description || 'Element'} should be visible`).toBeVisible({
+          timeout: timeout || this.defaultTimeout,
+        });
         this.logger.info(`${description || 'Element'} is visible.`);
-    }
+      }
+      
 
     async toHaveTitle(expectedTitle: string, timeout?: number) {
         await expect(this.page).toHaveTitle(expectedTitle, { timeout: timeout || this.defaultTimeout });
@@ -48,4 +52,24 @@ export class AssertHelper {
         await expect(locator, `${description || 'Element'} should be disabled`).toBeDisabled({ timeout: timeout || this.defaultTimeout });
         this.logger.info(`${description || 'Element'} is disabled.`);
     }
+
+    async toHaveAttribute(locator: Locator, attribute: string, expected: string, description?: string, timeout?: number) {
+        await expect(locator, `${description || 'Element'} should have attribute "${attribute}" = "${expected}"`)
+          .toHaveAttribute(attribute, expected, { timeout: timeout || this.defaultTimeout });
+        this.logger.info(`${description || 'Element'} has attribute "${attribute}" = "${expected}".`);
+    }    
+
+    async toHaveIncreasedAttributeCount(
+        beforeLocator: Locator,
+        afterLocator: Locator,
+        attribute: string,
+        description?: string
+      ) {
+        const before = Number(await beforeLocator.getAttribute(attribute) || '0');
+        const after = Number(await afterLocator.getAttribute(attribute) || '0');
+      
+        expect(after, `${description || 'Element'} count did not increase`).toBeGreaterThan(before);
+        this.logger.info(`${description || 'Element'} count increased from ${before} to ${after}`);
+      }
+      
 }

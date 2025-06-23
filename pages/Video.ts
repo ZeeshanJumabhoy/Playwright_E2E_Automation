@@ -4,11 +4,12 @@ import { Selectors } from '../constants/Selectors';
 import { TestData } from '../data/TestData';
 
 export class Video extends BasePage {
-    
-    private readonly thumbsUp:Locator;
-    private readonly heartUp:Locator;
+
+    private readonly thumbsUp: Locator;
+    private readonly heartUp: Locator;
     private readonly commentting: Locator;
     private readonly buttonLocator: Locator;
+    private readonly playvideo: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -16,6 +17,7 @@ export class Video extends BasePage {
         this.heartUp = page.locator(Selectors.Video_Page.HeartUpButton);
         this.commentting = page.locator(Selectors.Video_Page.comment).nth(1);
         this.buttonLocator = page.locator(Selectors.Video_Page.Comment_Button);
+        this.playvideo = page.locator(Selectors.Video_Page.Play_Video);
     }
 
     async clickVideo(titlePart: string, index: number = 0): Promise<void> {
@@ -32,6 +34,7 @@ export class Video extends BasePage {
 
     async likevideo(): Promise<void> {
         await this.clickElement(this.thumbsUp, 'Liking the video');
+
     }
 
     async Favoritevideo(): Promise<void> {
@@ -41,7 +44,7 @@ export class Video extends BasePage {
     async CommentingOnVideo(comment: string): Promise<void> {
         // const locatorStr = Selectors.Video_Page.comment;
         // const locator = this.page.locator(Selectors.Video_Page.comment).nth(1);
-        await this.fillInput(this.commentting,comment,"Writing the comment");
+        await this.fillInput(this.commentting, comment, "Writing the comment");
         await this.clickElement(this.buttonLocator, 'Commenting on the video');
     }
 
@@ -108,44 +111,44 @@ export class Video extends BasePage {
     async SearchComment_VisibleAndEdit(oldComment: string, newComment: string): Promise<void> {
         const allCommentContainers = this.page.locator('div.media-body');
         const count = await allCommentContainers.count();
-    
+
         let targetCommentRow: Locator | null = null;
-    
+
         for (let i = 0; i < count; i++) {
             const container = allCommentContainers.nth(i);
             const commentTextLocator = container.locator('[data-e2e-span="comment"]');
-    
+
             if (await commentTextLocator.count() === 0) continue;
             if (!(await commentTextLocator.isVisible())) continue;
-    
+
             const text = await commentTextLocator.textContent();
             if (text?.trim() === oldComment.trim()) {
                 targetCommentRow = container;
                 break;
             }
         }
-    
+
         if (!targetCommentRow) {
             throw new Error(`Comment with text "${oldComment}" not found`);
         }
-    
+
         await targetCommentRow.scrollIntoViewIfNeeded();
         await targetCommentRow.hover();
         await this.page.waitForTimeout(300);
-    
+
         const editButton = targetCommentRow.locator('[data-e2e-link="editComment"]');
         await editButton.click({ force: true });
-    
-        const textarea = targetCommentRow.locator(Selectors.Video_Page.comment).first();
+
+        const textarea = targetCommentRow.locator(Selectors.Video_Page.comment);
         await textarea.fill(newComment);
-    
+
         const newCommentBlock = this.page.locator(`div[data-e2e-div="${newComment}"]`);
         const updateButton = newCommentBlock.locator('button[data-e2e-btn="Update"]');
         await updateButton.click();
-    
+
         this.logger.info(`Comment updated from "${oldComment}" to "${newComment}".`);
     }
-    
+
 
     // async SearchComment_VisibleAndDelete(oldComment: string): Promise<void> {
     //     const allCommentContainers = this.page.locator('div.media-body');
@@ -198,36 +201,41 @@ export class Video extends BasePage {
     async SearchComment_VisibleAndDelete(oldComment: string): Promise<void> {
         const allCommentContainers = this.page.locator('div.media-body');
         const count = await allCommentContainers.count();
-    
+
         let targetCommentRow: Locator | null = null;
-    
+
         for (let i = 0; i < count; i++) {
             const container = allCommentContainers.nth(i);
             const commentTextLocator = container.locator('[data-e2e-span="comment"]');
-    
+
             if (await commentTextLocator.count() === 0) continue;
             if (!(await commentTextLocator.isVisible())) continue;
-    
+
             const text = await commentTextLocator.textContent();
             if (text?.trim() === oldComment.trim()) {
                 targetCommentRow = container;
                 break;
             }
         }
-    
+
         if (!targetCommentRow) {
             throw new Error(`Comment with text "${oldComment}" not found`);
         }
-    
+
         await targetCommentRow.scrollIntoViewIfNeeded();
         await targetCommentRow.hover();
         await this.page.waitForTimeout(500);
-    
+
         const deleteButton = targetCommentRow.locator('[data-e2e-link="deleteComment"]');
         await deleteButton.click({ force: true });
-    
+
         this.logger.info(`Comment "${oldComment}" deleted.`);
     }
-    
+
+    async playVideo(): Promise<void> {
+        await this.clickElement(this.playvideo, 'Clicking play button');
+        await this.page.waitForTimeout(1000);
+    }
+
 
 }

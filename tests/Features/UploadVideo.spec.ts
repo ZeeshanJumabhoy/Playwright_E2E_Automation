@@ -14,7 +14,7 @@ test.describe('Uploading Media, Searching and Playing it', () => {
     controlPanel,
     assert
   }) => {
-    await homePage.clickSignIn();
+    
     await loginPage.login(TestData.USER.email, TestData.USER.password);
 
     await homePage.clickMediaButton();
@@ -35,7 +35,7 @@ test.describe('Uploading Media, Searching and Playing it', () => {
 
     await homePage.Search(TestData.ControlPanel.VideoTitle2);
 
-    const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext));
+    const videoLocator = page.locator(Selectors.Main_PAGE.Video_Link(TestData.Video.VideoPartialtext2));
     await assert.toBeVisible(videoLocator, 'Video link from search results');
 
     await videoPage.clickVideo(TestData.Video.VideoPartialtext2);
