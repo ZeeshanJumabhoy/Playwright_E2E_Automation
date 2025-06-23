@@ -1,5 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
-import { BasePage } from './base/BasePage';
+import { BasePage } from '../base/BasePage';
 import { TestData } from '../data/TestData';
 import { VideoPageSelectors } from '../constants/VideoPageSelectors';
 import { HomePageSelectors } from '../constants/HomePageSelectors';
@@ -23,7 +23,7 @@ export class Video extends BasePage {
 
     async clickVideo(titlePart: string, index: number = 0): Promise<void> {
         const locatorStr = HomePageSelectors.Video_Link(titlePart);
-        const locator = this.page.locator(locatorStr);
+        const locator = this.page.locator(locatorStr).first();
         await this.clickElement(locator, 'Playing video');
     }
 

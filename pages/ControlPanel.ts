@@ -1,5 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
-import { BasePage } from './base/BasePage';
+import { BasePage } from '../base/BasePage';
 import { SharedSelectors } from '../constants/SharedSelectors';
 import { HomePageSelectors } from '../constants/HomePageSelectors';
 
@@ -9,6 +9,7 @@ export class Control_Panel extends BasePage {
     private readonly workflowsButton: Locator;
     private readonly statelocator: Locator;
     private readonly percentageLocator: Locator;
+    private readonly refreshbutton: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -18,6 +19,7 @@ export class Control_Panel extends BasePage {
         this.workflowsButton = this.page.locator(SharedSelectors.CONTROL_PANEL.workflows_Button);
         this.statelocator = this.page.locator(SharedSelectors.CONTROL_PANEL.state_locator);
         this.percentageLocator = this.page.locator(SharedSelectors.CONTROL_PANEL.percentage_locator);
+        this.refreshbutton= this.page.locator(SharedSelectors.CONTROL_PANEL.refresh_button);
     }
 
     async clickControlPanel(): Promise<void> { 
@@ -41,39 +43,48 @@ export class Control_Panel extends BasePage {
 
     //Chnage to made in thsi as well
     async waitForWorkflowToFinish(videoTitle: string): Promise<void> {
+        await this.clickElement(this.controlPanelButton, 'Control Panel Button');
+        await this.clickElement(this.workflowsButton, 'Workflows Button');
+
         this.logger.info(`Waiting for video "${videoTitle}" to finish processing...`);
-
-        const pollingInterval = 15000;
+    
+        const pollingInterval = 5000; // 5 seconds
         const maxRetries = 1000;
-
+    
         for (let attempt = 1; attempt <= maxRetries; attempt++) {
-            await this.page.reload();
-
+            await this.refreshbutton.click(); 
+            await this.page.waitForTimeout(1000);
+    
             const rowLocator = this.page.locator(SharedSelectors.CONTROL_PANEL.Video_row_locator(videoTitle));
             const isRowVisible = await rowLocator.isVisible();
-
+    
             if (!isRowVisible) {
                 this.logger.warn(`Video "${videoTitle}" not found in table. Retrying in ${pollingInterval / 1000}s...`);
                 await this.page.waitForTimeout(pollingInterval);
                 continue;
             }
-
-            const stateLocator = rowLocator.locator( this.statelocator);
+    
+            const stateLocator = rowLocator.locator(this.statelocator);
             const percentageLocator = rowLocator.locator(this.percentageLocator);
-
+    
             const stateText = await stateLocator.textContent();
             const percentageText = await percentageLocator.textContent();
-
+    
             this.logger.info(`Check #${attempt} - State: "${stateText?.trim()}", Progress: ${percentageText?.trim()}`);
-
+    
             if (stateText?.trim() === 'Finished') {
                 this.logger.info(`Video "${videoTitle}" has finished processing.`);
                 return;
             }
-
+    
+            if (stateText?.trim() === 'Failed') {
+                throw new Error(`Video "${videoTitle}" failed to process.`);
+            }
+    
             await this.page.waitForTimeout(pollingInterval);
         }
-
+    
         throw new Error(`Video "${videoTitle}" did not finish processing after ${maxRetries * (pollingInterval / 1000)} seconds`);
     }
+    
 }

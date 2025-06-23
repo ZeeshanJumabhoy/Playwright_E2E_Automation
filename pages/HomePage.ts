@@ -1,5 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
-import { BasePage } from './base/BasePage';
+import { BasePage } from '../base/BasePage';
 import { AppConstants } from '../constants/AppConstants';
 import { SharedSelectors } from '../constants/SharedSelectors';
 import { HomePageSelectors } from '../constants/HomePageSelectors';

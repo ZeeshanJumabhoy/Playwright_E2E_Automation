@@ -1,9 +1,9 @@
 import { Page, Locator } from '@playwright/test';
-import { Logger } from '../../utils/Logger';
-import { WaitHelper } from '../../utils/WaitHelper';
-import { AppConstants } from '../../constants/AppConstants';
+import { Logger } from '../utils/Logger';
+import { WaitHelper } from '../utils/WaitHelper';
+import { AppConstants } from '../constants/AppConstants';
 
-export abstract class BasePage {
+export class BasePage {
     protected readonly page: Page;
     protected readonly logger: Logger;
     protected readonly waitHelper: WaitHelper;

@@ -1,5 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
-import { BasePage } from './base/BasePage';
+import { BasePage } from '../base/BasePage';
 import { HomePageSelectors } from '../constants/HomePageSelectors';
 
 export class Media extends BasePage {
@@ -7,12 +7,14 @@ export class Media extends BasePage {
     private readonly addVideoButton: Locator;
     private readonly uploadInputField: Locator;
     private readonly uploadVideoButton: Locator;
+    private readonly mediaButton: Locator;
 
     constructor(page: Page) {
         super(page);
         this.uploadVideoButton = page.locator(HomePageSelectors.UploadVideo);
         this.addVideoButton = page.locator(HomePageSelectors.AddVideo);
         this.uploadInputField = page.locator(HomePageSelectors.uploadInput);
+        this.mediaButton = this.page.locator(HomePageSelectors.Add_Media);
         
     }
 
@@ -26,17 +28,11 @@ export class Media extends BasePage {
     // }
 
     async uploadVideo(filePath: string): Promise<void> {
+        await this.clickElement(this.uploadVideoButton, 'Media Button');
         await this.waitHelper.waitForElementToBeVisible(this.addVideoButton);
-       // await this.clickElement(uploadInput, 'Click here to upload video file');
-        //const uploadInput2 = this.page.locator(Selectors.Main_PAGE.uploadInput);
-       // await this.waitHelper.waitForElementToBeVisible(uploadInput2);
         await this.uploadInputField.setInputFiles(filePath);
         this.logger.info(`Video file uploaded: ${filePath}`);
     }
 }
-
-
-
-
 
 

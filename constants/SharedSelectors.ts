@@ -9,6 +9,7 @@ export const SharedSelectors = {
       Video_row_locator: (videoTitle: string) => `tr[data-e2e-tr-object-title="${videoTitle}"]`,
       state_locator: '[data-e2e-td="workflow-state"]',
       percentage_locator: '[data-e2e-td="percentage"]',
+      refresh_button: 'a[data-e2e-link="Refresh"]'
     }
   } as const;
   
