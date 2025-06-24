@@ -3,7 +3,9 @@ import { BasePage } from '../base/BasePage';
 import { SharedSelectors } from '../constants/SharedSelectors';
 import { HomePageSelectors } from '../constants/HomePageSelectors';
 
-export class Control_Panel extends BasePage {
+export class Control_Panel {
+    private readonly page: Page;
+    private readonly basePage: BasePage;
     // Locators
     private readonly controlPanelButton: Locator;
     private readonly workflowsButton: Locator;
@@ -12,7 +14,8 @@ export class Control_Panel extends BasePage {
     private readonly refreshbutton: Locator;
 
     constructor(page: Page) {
-        super(page);
+        this.page = page;
+        this.basePage = new BasePage(page);
 
         // Control Panel Elements
         this.controlPanelButton = this.page.locator(HomePageSelectors.controlPanel_Button);
@@ -23,30 +26,30 @@ export class Control_Panel extends BasePage {
     }
 
     async clickControlPanel(): Promise<void> { 
-        await this.clickElement(this.controlPanelButton, 'Control Panel Button');
+        await this.basePage.clickElement(this.controlPanelButton, 'Control Panel Button');
     }
 
     async validateControlPageLoaded(expectedTitle: string): Promise<void> {
         await expect(this.page).toHaveTitle(expectedTitle);
-        this.logger.info(`Control page loaded with correct title: ${expectedTitle}`);
+        this.basePage.logger.info(`Control page loaded with correct title: ${expectedTitle}`);
     }
 
     async clickWorkflows(): Promise<void> {
-        await this.clickElement(this.workflowsButton, 'Workflows Button');
+        await this.basePage.clickElement(this.workflowsButton, 'Workflows Button');
     }
 
     async validateWorkflowsPageLoaded(expectedTitle: string): Promise<void> {
         await expect(this.page).toHaveTitle(expectedTitle);
-        this.logger.info(`Media page loaded with correct title: ${expectedTitle}`);
+        this.basePage.logger.info(`Media page loaded with correct title: ${expectedTitle}`);
     }
 
 
     //Chnage to made in thsi as well
     async waitForWorkflowToFinish(videoTitle: string): Promise<void> {
-        await this.clickElement(this.controlPanelButton, 'Control Panel Button');
-        await this.clickElement(this.workflowsButton, 'Workflows Button');
+        await this.basePage.clickElement(this.controlPanelButton, 'Control Panel Button');
+        await this.basePage.clickElement(this.workflowsButton, 'Workflows Button');
 
-        this.logger.info(`Waiting for video "${videoTitle}" to finish processing...`);
+        this.basePage.logger.info(`Waiting for video "${videoTitle}" to finish processing...`);
     
         const pollingInterval = 5000; // 5 seconds
         const maxRetries = 1000;
@@ -59,7 +62,7 @@ export class Control_Panel extends BasePage {
             const isRowVisible = await rowLocator.isVisible();
     
             if (!isRowVisible) {
-                this.logger.warn(`Video "${videoTitle}" not found in table. Retrying in ${pollingInterval / 1000}s...`);
+                this.basePage.logger.warn(`Video "${videoTitle}" not found in table. Retrying in ${pollingInterval / 1000}s...`);
                 await this.page.waitForTimeout(pollingInterval);
                 continue;
             }
@@ -70,10 +73,10 @@ export class Control_Panel extends BasePage {
             const stateText = await stateLocator.textContent();
             const percentageText = await percentageLocator.textContent();
     
-            this.logger.info(`Check #${attempt} - State: "${stateText?.trim()}", Progress: ${percentageText?.trim()}`);
+            this.basePage.logger.info(`Check #${attempt} - State: "${stateText?.trim()}", Progress: ${percentageText?.trim()}`);
     
             if (stateText?.trim() === 'Finished') {
-                this.logger.info(`Video "${videoTitle}" has finished processing.`);
+                this.basePage.logger.info(`Video "${videoTitle}" has finished processing.`);
                 return;
             }
     

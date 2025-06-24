@@ -5,8 +5,8 @@ import { AppConstants } from '../constants/AppConstants';
 
 export class BasePage {
     protected readonly page: Page;
-    protected readonly logger: Logger;
-    protected readonly waitHelper: WaitHelper;
+    public readonly logger: Logger;
+    public readonly waitHelper: WaitHelper;
 
     constructor(page: Page) {
         this.page = page;
@@ -21,14 +21,14 @@ export class BasePage {
         this.logger.info(`Successfully navigated to: ${url}`);
     }
 
-    protected async clickElement(locator: Locator, description: string): Promise<void> {
+    public async clickElement(locator: Locator, description: string): Promise<void> {
         this.logger.info(`Clicking: ${description}`);
         await this.waitHelper.waitForElementToBeVisible(locator);
         await locator.click();
         this.logger.info(`Successfully clicked: ${description}`);
     }
 
-    protected async fillInput(locator: Locator, value: string, description: string): Promise<void> {
+    public async fillInput(locator: Locator, value: string, description: string): Promise<void> {
         this.logger.info(`Filling ${description} with: ${value}`);
         await this.waitHelper.waitForElementToBeVisible(locator);
         await locator.fill(value);

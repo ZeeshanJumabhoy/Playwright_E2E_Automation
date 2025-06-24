@@ -2,30 +2,34 @@ import { Page, Locator } from '@playwright/test';
 import { BasePage } from '../base/BasePage';
 import { LoginPageSelectors } from '../constants/LoginPageSelectors';
 import { SharedSelectors } from '../constants/SharedSelectors';
-import { HomePage } from './HomePage';
 
-export class LoginPage extends BasePage {
+export class LoginPage {
+    private readonly page: Page;
+    private readonly basePage: BasePage;
+
     private readonly emailInput: Locator;
     private readonly passwordInput: Locator;
     private readonly signInButton: Locator;
     private readonly signInProfile: Locator;
 
     constructor(page: Page) {
-        super(page);
-        this.emailInput = this.page.locator(LoginPageSelectors.EMAIL_INPUT);
-        this.passwordInput = this.page.locator(LoginPageSelectors.PASSWORD_INPUT);
-        this.signInButton = this.page.locator(LoginPageSelectors.SIGNIN_BUTTON);
-        this.signInProfile = this.page.locator(SharedSelectors.NAVIGATION.SIGN_IN_BUTTON);
+        this.page = page;
+        this.basePage = new BasePage(page);
+
+        this.emailInput = page.locator(LoginPageSelectors.EMAIL_INPUT);
+        this.passwordInput = page.locator(LoginPageSelectors.PASSWORD_INPUT);
+        this.signInButton = page.locator(LoginPageSelectors.SIGNIN_BUTTON);
+        this.signInProfile = page.locator(SharedSelectors.NAVIGATION.SIGN_IN_BUTTON);
     }
 
     async login(email: string, password: string): Promise<void> {
-        await this.clickElement(this.signInProfile, 'Sign In Button');
-        this.logger.info(`Logging in user: ${email}`);
+        await this.basePage.clickElement(this.signInProfile, 'Sign In Button');
+        this.basePage.logger.info(`Logging in user: ${email}`);
         
-        await this.fillInput(this.emailInput, email, 'Email Address');
-        await this.fillInput(this.passwordInput, password, 'Password'); 
-        await this.clickElement(this.signInButton, 'Sign In Button');
-        
-        this.logger.info('Login process completed');
+        await this.basePage.fillInput(this.emailInput, email, 'Email Address');
+        await this.basePage.fillInput(this.passwordInput, password, 'Password');
+        await this.basePage.clickElement(this.signInButton, 'Sign In Button');
+
+        this.basePage.logger.info('Login process completed');
     }
 }

@@ -4,7 +4,10 @@ import { AppConstants } from '../constants/AppConstants';
 import { SharedSelectors } from '../constants/SharedSelectors';
 import { HomePageSelectors } from '../constants/HomePageSelectors';
 
-export class HomePage extends BasePage {
+export class HomePage {
+
+    private readonly page: Page;
+    private readonly basePage: BasePage;
     // Navigation Elements
     private readonly signInButton: Locator;
     private readonly profileToggle: Locator;
@@ -17,7 +20,8 @@ export class HomePage extends BasePage {
     private readonly toggleButton: Locator;
 
     constructor(page: Page) {
-        super(page);
+        this.page = page;
+        this.basePage = new BasePage(page);
 
         // Navigation
         this.signInButton = this.page.locator(SharedSelectors.NAVIGATION.SIGN_IN_BUTTON);
@@ -32,7 +36,7 @@ export class HomePage extends BasePage {
     }
 
     async open(): Promise<void> {
-        await this.navigateTo(AppConstants.BASE_URL);
+        await this.basePage.navigateTo(AppConstants.BASE_URL);
     }
 
     // async validateHomePageLoaded(expectedTitle: string): Promise<void> {
@@ -41,7 +45,7 @@ export class HomePage extends BasePage {
     // }
 
     async clickSignIn(): Promise<void> {
-        await this.clickElement(this.signInButton, 'Sign In Button');
+        await this.basePage.clickElement(this.signInButton, 'Sign In Button');
     }
 
     // async isUserLoggedIn(): Promise<boolean> {
@@ -49,8 +53,8 @@ export class HomePage extends BasePage {
     // }
 
     async Search(search: string): Promise<void> {
-        await this.fillInput(this.inputSearchbar, search, 'Entering the input to search the video');
-        await this.clickElement(this.clickSearchbutton, 'Clicking the search button');
+        await this.basePage.fillInput(this.inputSearchbar, search, 'Entering the input to search the video');
+        await this.basePage.clickElement(this.clickSearchbutton, 'Clicking the search button');
     }
 
     // async isVideoVisible(titlePart: string, index: number = 0): Promise<boolean> {
@@ -60,8 +64,8 @@ export class HomePage extends BasePage {
     // }
 
     async clickMediaButton(): Promise<void> {
-        await this.waitHelper.waitForElementToBeVisible(this.mediaButton);
-        await this.clickElement(this.mediaButton, 'Media Button');
+        await this.basePage.waitHelper.waitForElementToBeVisible(this.mediaButton);
+        await this.basePage.clickElement(this.mediaButton, 'Media Button');
     }
 
     // async validateMediaPageLoaded(expectedTitle: string): Promise<void> {
@@ -70,13 +74,13 @@ export class HomePage extends BasePage {
     // }
 
     async logout(): Promise<void> {
-        this.logger.info('Starting logout process');
-        await this.clickElement(this.profileToggle, 'Profile Toggle Button');
-        await this.waitHelper.waitWithTimeout(AppConstants.SHORT_WAIT);
-        await this.waitHelper.waitForElementToBeVisible(this.signOutButton);
-        await this.clickElement(this.signOutButton, 'Sign Out Button');
-        await this.waitHelper.waitWithTimeout(AppConstants.SHORT_WAIT);
-        this.logger.info('Logout completed');
+        this.basePage.logger.info('Starting logout process');
+        await this.basePage.clickElement(this.profileToggle, 'Profile Toggle Button');
+        await this.basePage.waitHelper.waitWithTimeout(AppConstants.SHORT_WAIT);
+        await this.basePage.waitHelper.waitForElementToBeVisible(this.signOutButton);
+        await this.basePage.clickElement(this.signOutButton, 'Sign Out Button');
+        await this.basePage.waitHelper.waitWithTimeout(AppConstants.SHORT_WAIT);
+        this.basePage.logger.info('Logout completed');
     }
 
     // async validateLogoutSuccess(): Promise<void> {
@@ -93,7 +97,7 @@ export class HomePage extends BasePage {
     // }
 
     async clicktoggleButton(): Promise<void> {
-        await this.waitHelper.waitForElementToBeVisible(this.toggleButton);
-        await this.clickElement(this.toggleButton, 'Toggle Button');
+        await this.basePage.waitHelper.waitForElementToBeVisible(this.toggleButton);
+        await this.basePage.clickElement(this.toggleButton, 'Toggle Button');
     }
 }

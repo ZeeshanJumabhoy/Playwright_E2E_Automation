@@ -4,7 +4,9 @@ import { TestData } from '../data/TestData';
 import { VideoPageSelectors } from '../constants/VideoPageSelectors';
 import { HomePageSelectors } from '../constants/HomePageSelectors';
 
-export class Video extends BasePage {
+export class Video {
+    private readonly page: Page;
+    private readonly basePage: BasePage;
 
     private readonly thumbsUp: Locator;
     private readonly heartUp: Locator;
@@ -13,7 +15,9 @@ export class Video extends BasePage {
     private readonly playvideo: Locator;
 
     constructor(page: Page) {
-        super(page);
+
+        this.page = page;
+        this.basePage = new BasePage(page);
         this.thumbsUp = page.locator(VideoPageSelectors.ThumbsUpButton);
         this.heartUp = page.locator(VideoPageSelectors.HeartUpButton);
         this.commentting = page.locator(VideoPageSelectors.comment).nth(1);
@@ -24,7 +28,7 @@ export class Video extends BasePage {
     async clickVideo(titlePart: string, index: number = 0): Promise<void> {
         const locatorStr = HomePageSelectors.Video_Link(titlePart);
         const locator = this.page.locator(locatorStr).first();
-        await this.clickElement(locator, 'Playing video');
+        await this.basePage.clickElement(locator, 'Playing video');
     }
 
     // async IsVideoHeadingVisible(titlePart: string): Promise<Boolean> {
@@ -34,19 +38,19 @@ export class Video extends BasePage {
     // }
 
     async likevideo(): Promise<void> {
-        await this.clickElement(this.thumbsUp, 'Liking the video');
+        await this.basePage.clickElement(this.thumbsUp, 'Liking the video');
 
     }
 
     async Favoritevideo(): Promise<void> {
-        await this.clickElement(this.heartUp, 'Favorite the video');
+        await this.basePage.clickElement(this.heartUp, 'Favorite the video');
     }
 
     async CommentingOnVideo(comment: string): Promise<void> {
         // const locatorStr = Selectors.Video_Page.comment;
         // const locator = this.page.locator(Selectors.Video_Page.comment).nth(1);
-        await this.fillInput(this.commentting, comment, "Writing the comment");
-        await this.clickElement(this.buttonLocator, 'Commenting on the video');
+        await this.basePage.fillInput(this.commentting, comment, "Writing the comment");
+        await this.basePage.clickElement(this.buttonLocator, 'Commenting on the video');
     }
 
     // async SearchComment_Visible(comment: string): Promise<void> {
@@ -147,7 +151,7 @@ export class Video extends BasePage {
         const updateButton = newCommentBlock.locator('button[data-e2e-btn="Update"]');
         await updateButton.click();
 
-        this.logger.info(`Comment updated from "${oldComment}" to "${newComment}".`);
+        this.basePage.logger.info(`Comment updated from "${oldComment}" to "${newComment}".`);
     }
 
 
@@ -230,11 +234,11 @@ export class Video extends BasePage {
         const deleteButton = targetCommentRow.locator('[data-e2e-link="deleteComment"]');
         await deleteButton.click({ force: true });
 
-        this.logger.info(`Comment "${oldComment}" deleted.`);
+        this.basePage.logger.info(`Comment "${oldComment}" deleted.`);
     }
 
     async playVideo(): Promise<void> {
-        await this.clickElement(this.playvideo, 'Clicking play button');
+        await this.basePage.clickElement(this.playvideo, 'Clicking play button');
         await this.page.waitForTimeout(1000);
     }
 
