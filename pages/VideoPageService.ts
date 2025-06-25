@@ -64,6 +64,7 @@ export class Video {
         await this.clickPlaybackByMashupId(mashupId,title);
         await this.basePage.fillInput(this.commentting, comment, "Writing the comment");
         await this.basePage.clickElement(this.buttonLocator, 'Commenting on the video');
+        //remove
         await this.page.reload();
         await this.assert.toHaveTitle(TestData.Video.Video_Page_Title(title));
     }

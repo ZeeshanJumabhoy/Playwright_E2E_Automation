@@ -8,14 +8,14 @@ test.describe('Searching and playing video with Authentication', () => {
 
         await loginPage.login(TestData.USER.email, TestData.USER.password);
 
-        const { mashupId, title } = await mediaPage.uploadVideo(TestData.Video.Video_Path);
+        const MashupPage = await mediaPage.uploadVideo(TestData.Video.Video_Path);
 
-        await controlPanel.waitForWorkflowToFinish(mashupId);
+        await controlPanel.waitForWorkflowToFinish(await MashupPage.getId());
         
-        await videoPage.clickPlaybackByMashupId(mashupId,title);
+        await videoPage.clickPlaybackByMashupId( await MashupPage.getId(), await MashupPage.getTitle());
 
         // Verify the video page is opened
-        const headingLocator = page.locator(VideoPageSelectors.Video_Heading(mashupId));
+        const headingLocator = page.locator(VideoPageSelectors.Video_Heading(await MashupPage.getTitle()));
         await assert.toBeVisible(headingLocator, 'Video heading after clicking');
 
         // Then play the video and verify it is playing

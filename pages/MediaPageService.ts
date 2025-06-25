@@ -50,21 +50,18 @@ export class Media {
     //     this.basePage.logger.info(`Media page loaded with correct title: ${expectedTitle}`);
     // }
 
-    async uploadVideo(filePath: string): Promise<{ mashupId: string; title: string }> {
-
-        //Uploading Video with Sarching and going onto Video Page
+    async uploadVideo(filePath: string): Promise<MashupPage> {
         await this.homepage.clickMediaButton();
         await this.basePage.clickElement(this.uploadVideoButton, 'Media Button');
         await this.basePage.waitHelper.waitForElementToBeVisible(this.addVideoButton);
         await this.uploadInputField.setInputFiles(filePath);
         this.basePage.logger.info(`Video file uploaded: ${filePath}`);
-
+    
         try {
             await this.waitHelper.waitForElementToBeVisible(this.toast_locator, 5000);
         } catch (error) {
-            // Combine both possible warning locators
             const warningLocator = this.fileExistsWarning.or(this.alertWarning);
-
+    
             try {
                 await expect(warningLocator.first()).toBeHidden({ timeout: 20000 });
                 this.basePage.logger.info('File already exists. Clicking Keep button...');
@@ -79,15 +76,10 @@ export class Media {
                 );
             }
         }
-
-        const mashupPage = new MashupPage(this.page);
-        await mashupPage.initializeMashupInfo();
-
-        const mashupId = await mashupPage.getId();
-        const title = await mashupPage.getTitle();
-
-        return { mashupId, title };
+    
+        return await new MashupPage(this.page).initializeMashupInfo(); // return the initialized page object
     }
+    
 
 
 }

@@ -6,8 +6,8 @@ export class TestData {
     };
 
     static readonly Video = {
-        VideoPartialtext: 'Video_640x360_68mb',
-        Video_Path: `C:\\Users\\Zeeshan.mustafa\\Downloads\\Video_640x360_68mb.mp4`,
+        VideoPartialtext: 'Video_640x360_69mb',
+        Video_Path: `C:\\Users\\Zeeshan.mustafa\\Downloads\\Video_640x360_69mb.mp4`,
         Video_Comment: `My First Comment on Video ${Math.floor(Math.random() * 1000000)}`,
         Video_Comment_Edit: `My First Comment on Video ${Math.floor(Math.random() * 1000000)}`,
         Video_Comment_To_Delete: `My First Comment on Video ${Math.floor(Math.random() * 1000000)}`,

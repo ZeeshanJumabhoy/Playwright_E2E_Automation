@@ -4,6 +4,7 @@ import { TestData } from '../../data/TestData';
 test.describe('Uploading Media, Searching and Playing it', () => {
 
   test('Should Upload the video and searching the video', async ({
+    page,
     homePage,
     loginPage,
     mediaPage,
@@ -13,11 +14,11 @@ test.describe('Uploading Media, Searching and Playing it', () => {
 
     await loginPage.login(TestData.USER.email, TestData.USER.password);
 
-    const { mashupId, title } = await mediaPage.uploadVideo(TestData.Video.Video_Path);
+    const MashupPage = await mediaPage.uploadVideo(TestData.Video.Video_Path);
 
-    await controlPanel.waitForWorkflowToFinish(mashupId);
+    await controlPanel.waitForWorkflowToFinish(await MashupPage.getId());
 
-    await videoPage.clickPlaybackByMashupId(mashupId, title);
+    await videoPage.clickPlaybackByMashupId( await MashupPage.getId(), await MashupPage.getTitle());
 
     // Then play the video and verify it is playing
     //await videoPage.playVideo();

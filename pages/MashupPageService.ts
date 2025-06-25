@@ -32,13 +32,14 @@ export class MashupPage {
         this.title = title;
     }
 
-    async initializeMashupInfo(): Promise<void> {
+    async initializeMashupInfo(): Promise<this> {
         const { mashupId, title } = await this.getMashupDetails(
             SharedSelectors.CONTROL_PANEL.upload_container,
             'data-e2e-mashupid'
         );
         await this.setMashupId(mashupId);
         await this.setTitle(title);
+        return this;
     }
 
     
