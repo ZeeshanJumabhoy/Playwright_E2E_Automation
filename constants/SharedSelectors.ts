@@ -11,6 +11,9 @@ export const SharedSelectors = {
       percentage_locator: '[data-e2e-td="percentage"]',
       refresh_button: 'a[data-e2e-link="Refresh"]',
       upload_container: 'div[data-e2e-div="uploadContainer"] >>nth=0',
+      keep_File: 'button[title="Keep"]>>nth=1',
+      FileExistWarn: 'div[data-e2e-div="UploadMediaFileAlreadyExist"]',
+      FileExistAlertWarn: '.alert-warning',
+      Toast_Locator: '#toast-container'
     }
   } as const;
-  

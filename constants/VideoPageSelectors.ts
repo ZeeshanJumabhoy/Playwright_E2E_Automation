@@ -11,7 +11,10 @@ export const VideoPageSelectors = {
     Edit_Button:'button[data-e2e-link="editComment"]',
     Update_Button: 'button[data-e2e-btn="Update"]',
     Delete_Button: 'button[data-e2e-link="deleteComment"]',
-    Comment_TextSpan: '[data-e2e-span="comment"]',
     Play_Video: 'vjs-big-play-button',
+    Click_Video: (text: string) => `div[date-e2e-mashupid="${text}"]`,
+    Video_Hyper: 'a[href*="/play/video/"]>>nth=0',
+
   } as const;
+
   

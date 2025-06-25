@@ -48,11 +48,7 @@ export class BasePage {
         }
     }
 
-    public async getMashupDetails(parentSelector: string, attributeName: string, toastSelector: string = '#toast-container'): Promise<{ mashupId: string; title: string }> {
-        const toastLocator = this.page.locator(toastSelector);
-        await this.waitHelper.waitForElementToBeVisible(toastLocator);
-        await this.waitHelper.waitWithTimeout(1000);
-
+    public async getMashupDetails(parentSelector: string, attributeName: string): Promise<{ mashupId: string; title: string }> {
         const parentLocator = this.page.locator(parentSelector).first();
         //await this.waitHelper.waitForElementToBeVisible(parentLocator);
 
@@ -76,6 +72,4 @@ export class BasePage {
             title
         };
     }
-
-
 }

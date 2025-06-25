@@ -43,7 +43,6 @@ export class Control_Panel {
         this.basePage.logger.info(`Media page loaded with correct title: ${expectedTitle}`);
     }
 
-    //Chnage to made in thsi as well
     async waitForWorkflowToFinish(objectid: string): Promise<void> {
         await this.basePage.clickElement(this.controlPanelButton, 'Control Panel Button');
         await this.basePage.clickElement(this.workflowsButton, 'Workflows Button');
@@ -80,6 +79,10 @@ export class Control_Panel {
             }
     
             if (stateText?.trim() === 'Failed') {
+                throw new Error(`Video "${objectid}" failed to process.`);
+            }
+
+            if (stateText?.trim() === 'Cancelled') {
                 throw new Error(`Video "${objectid}" failed to process.`);
             }
     

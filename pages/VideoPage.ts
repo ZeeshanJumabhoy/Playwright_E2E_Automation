@@ -14,6 +14,7 @@ export class Video {
     private readonly commentting: Locator;
     private readonly buttonLocator: Locator;
     private readonly playvideo: Locator;
+    private readonly videohyperlink: Locator
 
     constructor(page: Page) {
 
@@ -24,15 +25,16 @@ export class Video {
         this.commentting = page.locator(VideoPageSelectors.comment).nth(1);
         this.buttonLocator = page.locator(VideoPageSelectors.Comment_Button);
         this.playvideo = page.locator(VideoPageSelectors.Play_Video);
+        this.videohyperlink = page.locator(VideoPageSelectors.Video_Hyper);
     }
 
     async clickVideoByMashupId(mashupId: string): Promise<void> {
-        const container = this.page.locator(`div[date-e2e-mashupid="${mashupId}"]`);
-    
-        const anchor = container.locator('a[href*="/play/video/"]>>nth=0');
+        const container = this.page.locator(VideoPageSelectors.Click_Video(mashupId));
+
+        const anchor = container.locator(this.videohyperlink);
         await this.basePage.clickElement(anchor, `Clicking on video with mashupId ${mashupId}`);
     }
-      
+
 
     // async IsVideoHeadingVisible(titlePart: string): Promise<Boolean> {
     //     const video = Selectors.Video_Page.Video_Heading(titlePart);

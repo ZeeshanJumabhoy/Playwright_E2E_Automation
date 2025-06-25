@@ -6,7 +6,6 @@ export const HomePageSelectors = {
     Add_Media: 'a[data-e2e-link="addMediaRoute"]',
     UploadVideo: 'a[data-e2e-link="uploadMedia"]',
     AddVideo: 'a[data-e2e-link="uploadCtrl"]',
-    SaveAndCloseButton: 'button[data-e2e-btn="SaveAndClose"]',
     uploadInput: 'input[type="file"][data-e2e-input="uploadCtrl"][title="File Upload"]',
     // To verify the video is uploaded
     toggle_Button: 'button[data-e2e-link="selectMenuBar"][aria-label="Click here to open Menu pane"]',
