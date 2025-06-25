@@ -8,16 +8,11 @@ test.describe('Search and Like/Favorite Video with Authentication', () => {
 
     await loginPage.login(TestData.USER.email, TestData.USER.password);
 
-    //Uploading Video with Sarching and going onto Video Page
-    await homePage.clickMediaButton();
-
     const { mashupId, title } = await mediaPage.uploadVideo(TestData.Video.Video_Path);
 
-    await homePage.clicktoggleButton();
-
     await controlPanel.waitForWorkflowToFinish(mashupId);
-    await homePage.Search(title);
-    await videoPage.clickVideoByMashupId(mashupId);
+
+    await videoPage.clickPlaybackByMashupId(mashupId, title);
     //#endregion
 
     const likeBeforeLocator = page.locator(VideoPageSelectors.Like_Count_Before);

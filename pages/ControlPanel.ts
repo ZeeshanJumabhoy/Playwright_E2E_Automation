@@ -2,6 +2,7 @@ import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from '../base/BasePage';
 import { SharedSelectors } from '../constants/SharedSelectors';
 import { HomePageSelectors } from '../constants/HomePageSelectors';
+import { HomePage } from './HomePage';
 
 export class Control_Panel {
     private readonly page: Page;
@@ -12,10 +13,12 @@ export class Control_Panel {
     private readonly statelocator: Locator;
     private readonly percentageLocator: Locator;
     private readonly refreshbutton: Locator;
+    private readonly homePage: HomePage;
 
     constructor(page: Page) {
         this.page = page;
         this.basePage = new BasePage(page);
+        this.homePage = new HomePage(page);
 
         // Control Panel Elements
         this.controlPanelButton = this.page.locator(HomePageSelectors.controlPanel_Button);
@@ -44,6 +47,7 @@ export class Control_Panel {
     }
 
     async waitForWorkflowToFinish(objectid: string): Promise<void> {
+        await this.homePage.clicktoggleButton();
         await this.basePage.clickElement(this.controlPanelButton, 'Control Panel Button');
         await this.basePage.clickElement(this.workflowsButton, 'Workflows Button');
 

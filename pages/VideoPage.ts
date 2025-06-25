@@ -1,25 +1,29 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from '../base/BasePage';
-import { TestData } from '../data/TestData';
 import { VideoPageSelectors } from '../constants/VideoPageSelectors';
-import { HomePageSelectors } from '../constants/HomePageSelectors';
-import { resolveModuleName } from 'typescript';
+import { TestData } from '../data/TestData';
+import { HomePage } from './HomePage';
+import { AssertHelper } from '../utils/AssertHelper';
 
 export class Video {
     private readonly page: Page;
     private readonly basePage: BasePage;
+    private readonly homepage: HomePage;
+    private readonly assert:AssertHelper;
 
     private readonly thumbsUp: Locator;
     private readonly heartUp: Locator;
     private readonly commentting: Locator;
     private readonly buttonLocator: Locator;
     private readonly playvideo: Locator;
-    private readonly videohyperlink: Locator
+    private readonly videohyperlink: Locator;
 
     constructor(page: Page) {
 
         this.page = page;
         this.basePage = new BasePage(page);
+        this.homepage = new HomePage(page);
+        this.assert =  new AssertHelper(page);
         this.thumbsUp = page.locator(VideoPageSelectors.ThumbsUpButton);
         this.heartUp = page.locator(VideoPageSelectors.HeartUpButton);
         this.commentting = page.locator(VideoPageSelectors.comment).nth(1);
@@ -28,9 +32,9 @@ export class Video {
         this.videohyperlink = page.locator(VideoPageSelectors.Video_Hyper);
     }
 
-    async clickVideoByMashupId(mashupId: string): Promise<void> {
+    async clickPlaybackByMashupId(mashupId: string, title: string): Promise<void> {
+        await this.homepage.Search(title);
         const container = this.page.locator(VideoPageSelectors.Click_Video(mashupId));
-
         const anchor = container.locator(this.videohyperlink);
         await this.basePage.clickElement(anchor, `Clicking on video with mashupId ${mashupId}`);
     }
@@ -51,74 +55,17 @@ export class Video {
         await this.basePage.clickElement(this.heartUp, 'Favorite the video');
     }
 
-    async CommentingOnVideo(comment: string): Promise<void> {
-        // const locatorStr = Selectors.Video_Page.comment;
-        // const locator = this.page.locator(Selectors.Video_Page.comment).nth(1);
+    async CommentingOnVideo(comment: string , mashupId: string, title: string): Promise<void> {
+        await this.clickPlaybackByMashupId(mashupId,title);
         await this.basePage.fillInput(this.commentting, comment, "Writing the comment");
         await this.basePage.clickElement(this.buttonLocator, 'Commenting on the video');
+        await this.page.reload();
+        await this.assert.toHaveTitle(TestData.Video.Video_Page_Title(title));
     }
 
-    // async SearchComment_Visible(comment: string): Promise<void> {
-    //     const commentSelector = Selectors.Video_Page.Comment_Text(comment);
-    //     const commentLocator = this.page.locator(commentSelector);
+    async SearchComment_VisibleAndEdit(oldComment: string, newComment: string, mashupId: string, title: string): Promise<void> {
+        await this.CommentingOnVideo(oldComment, mashupId, title);
 
-    //     await expect(commentLocator.first(), `Comment "${comment}" not found on page`).toContainText(comment, { timeout: 10000 });
-
-    //     this.logger.info(`Comment "${comment}" is visible on the page.`);
-    // }
-
-    // async SearchComment_VisibleAndEdit(oldComment: string, newComment: string): Promise<void> {
-    //     const allCommentContainers = this.page.locator('div.media-body');
-    //     const count = await allCommentContainers.count();
-
-    //     let targetCommentRow: Locator | null = null;
-
-    //     for (let i = 0; i < count; i++) {
-    //         const container = allCommentContainers.nth(i);
-    //         const commentTextLocator = container.locator('[data-e2e-span="comment"]');
-
-    //         if (await commentTextLocator.count() === 0) continue;
-    //         if (!(await commentTextLocator.isVisible())) continue;
-
-    //         const text = await commentTextLocator.textContent();
-    //         if (text?.trim() === oldComment.trim()) {
-    //             targetCommentRow = container;
-    //             break;
-    //         }
-    //     }
-
-    //     if (!targetCommentRow) {
-    //         throw new Error(`Comment with text "${oldComment}" not found`);
-    //     }
-
-    //     await targetCommentRow.scrollIntoViewIfNeeded();
-    //     await targetCommentRow.hover();
-    //     await this.page.waitForTimeout(300); // Allow CSS to show edit button
-
-    //     const editButton = targetCommentRow.locator('[data-e2e-link="editComment"]'); // Adjust selector if needed
-
-    //     if (await editButton.isVisible()) {
-    //         await editButton.click();
-    //     } else {
-    //         this.logger.warn('Edit button not visibly rendered; attempting force click.');
-    //         await editButton.click({ force: true });
-    //     }
-
-    //     const textarea = targetCommentRow.locator(Selectors.Video_Page.comment).first();
-    //     await expect(textarea).toBeVisible({ timeout: 5000 });
-    //     await textarea.fill(newComment);
-
-    //     const newCommentBlock = this.page.locator(`div[data-e2e-div="${newComment}"]`);
-    //     const updateButton = newCommentBlock.locator('button[data-e2e-btn="Update"]');
-    //     await updateButton.click();
-
-    //     const updatedCommentLocator = this.page.locator(Selectors.Video_Page.Comment_Text(newComment));
-    //     await expect(updatedCommentLocator.first(), `Updated comment "${newComment}" not found`).toContainText(newComment, { timeout: 10000 });
-
-    //     this.logger.info(`Comment updated successfully from "${oldComment}" to "${newComment}".`);
-    // }
-
-    async SearchComment_VisibleAndEdit(oldComment: string, newComment: string): Promise<void> {
         const allCommentContainers = this.page.locator('div.media-body');
         const count = await allCommentContainers.count();
 
@@ -208,7 +155,8 @@ export class Video {
     //     this.logger.info(`Comment "${oldComment}" deleted successfully.`);
     // }
 
-    async SearchComment_VisibleAndDelete(oldComment: string): Promise<void> {
+    async SearchComment_VisibleAndDelete(oldComment: string, mashupId: string, title: string): Promise<void> {
+        await this.CommentingOnVideo(oldComment, mashupId, title);
         const allCommentContainers = this.page.locator('div.media-body');
         const count = await allCommentContainers.count();
 

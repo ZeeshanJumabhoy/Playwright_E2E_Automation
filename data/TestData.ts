@@ -6,13 +6,13 @@ export class TestData {
     };
 
     static readonly Video = {
-        VideoPartialtext:'Video_640x360_67mb',
-        Video_Path: `C:\\Users\\Zeeshan.mustafa\\Downloads\\Video_640x360_67mb.mp4`,
-        Video_Comment: "My First Comment on Video",
-        Video_Comment_Search: "My First Comment on Video",
-        New_Comment:"Hello World",
-        Video_Comment_Delete:"Hello World",
-        Add_To_Favorite:"Remove from Favorites",
+        VideoPartialtext: 'Video_640x360_68mb',
+        Video_Path: `C:\\Users\\Zeeshan.mustafa\\Downloads\\Video_640x360_68mb.mp4`,
+        Video_Comment: `My First Comment on Video ${Math.floor(Math.random() * 1000000)}`,
+        Video_Comment_Edit: `My First Comment on Video ${Math.floor(Math.random() * 1000000)}`,
+        Video_Comment_To_Delete: `My First Comment on Video ${Math.floor(Math.random() * 1000000)}`,
+        New_Comment: "Hello World",
+        Add_To_Favorite: "Remove from Favorites",
         Video_Page_Title: (text: string) => `${text} - 20250618-44-gcajqykf`,
     };
 

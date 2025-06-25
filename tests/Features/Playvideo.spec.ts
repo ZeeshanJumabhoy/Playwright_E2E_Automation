@@ -9,17 +9,11 @@ test.describe('Searching and playing video with Authentication', () => {
 
         await loginPage.login(TestData.USER.email, TestData.USER.password);
 
-        //Uploading Video with Sarching and going onto Video Page
-        await homePage.clickMediaButton();
-
         const { mashupId, title } = await mediaPage.uploadVideo(TestData.Video.Video_Path);
 
-        await homePage.clicktoggleButton();
-
         await controlPanel.waitForWorkflowToFinish(mashupId);
-        await homePage.Search(title);
-        await videoPage.clickVideoByMashupId(mashupId);
-        //#endregion
+        
+        await videoPage.clickPlaybackByMashupId(mashupId,title);
 
         // Verify the video page is opened
         const headingLocator = page.locator(VideoPageSelectors.Video_Heading(mashupId));

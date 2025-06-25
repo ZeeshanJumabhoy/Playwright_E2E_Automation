@@ -12,6 +12,7 @@
     "@types/node": "^24.0.3"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@types/puppeteer": "^5.4.7",
     "puppeteer": "^24.10.1",
     "ts-node": "^10.9.2",

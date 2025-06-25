@@ -4,6 +4,7 @@ import { HomePageSelectors } from '../constants/HomePageSelectors';
 import { SharedSelectors } from '../constants/SharedSelectors';
 import { WaitHelper } from '../utils/WaitHelper';
 import { MashupPage } from './MashupPage';
+import { HomePage } from './HomePage';
 
 export class Media {
 
@@ -20,11 +21,14 @@ export class Media {
     private readonly fileExistsWarning: Locator;
     private readonly alertWarning: Locator
     private readonly toast_locator: Locator;
+    private readonly homepage: HomePage;
+
 
     constructor(page: Page) {
         this.page = page;
         this.basePage = new BasePage(page);
         this.waitHelper = new WaitHelper(page);
+        this.homepage = new HomePage(page);
 
         this.uploadVideoButton = page.locator(HomePageSelectors.UploadVideo);
         this.addVideoButton = page.locator(HomePageSelectors.AddVideo);
@@ -47,6 +51,9 @@ export class Media {
     // }
 
     async uploadVideo(filePath: string): Promise<{ mashupId: string; title: string }> {
+
+        //Uploading Video with Sarching and going onto Video Page
+        await this.homepage.clickMediaButton();
         await this.basePage.clickElement(this.uploadVideoButton, 'Media Button');
         await this.basePage.waitHelper.waitForElementToBeVisible(this.addVideoButton);
         await this.uploadInputField.setInputFiles(filePath);

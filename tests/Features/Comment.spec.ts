@@ -3,7 +3,6 @@ import { TestData } from '../../data/TestData';
 import { SharedSelectors } from '../../constants/SharedSelectors';
 import { HomePageSelectors } from '../../constants/HomePageSelectors';
 import { VideoPageSelectors } from '../../constants/VideoPageSelectors';
-import { resolveModuleName } from 'typescript';
 
 test.describe('Searching, commenting and editing/deleting comment on video', () => {
     test('should play video, add/edit/delete comment', async ({ page, homePage, loginPage, videoPage, assert, mediaPage, controlPanel }) => {
@@ -11,36 +10,25 @@ test.describe('Searching, commenting and editing/deleting comment on video', () 
 
         await loginPage.login(TestData.USER.email, TestData.USER.password);
 
-
-        //Uploading Video with Sarching and going onto Video Page
-        await homePage.clickMediaButton();
-
         const { mashupId, title } = await mediaPage.uploadVideo(TestData.Video.Video_Path);
 
-        await homePage.clicktoggleButton();
-
         await controlPanel.waitForWorkflowToFinish(mashupId);
-        await homePage.Search(title);
-        await videoPage.clickVideoByMashupId(mashupId);
         //#endregion
 
         // Add comment
-        await videoPage.CommentingOnVideo(TestData.Video.Video_Comment);
-        await page.reload();
-        await assert.toHaveTitle(TestData.Video.Video_Page_Title(title));
-        const commentLocator = page.locator(VideoPageSelectors.Comment_Text(TestData.Video.Video_Comment_Search));
-        await assert.toBeHidden(commentLocator, `Comment "${TestData.Video.Video_Comment_Search}"`);
+        await videoPage.CommentingOnVideo(TestData.Video.Video_Comment, mashupId, title);
+        const commentLocator = page.locator(VideoPageSelectors.Comment_Text(TestData.Video.Video_Comment));
+        await assert.toBeHidden(commentLocator, `Comment "${TestData.Video.Video_Comment}"`);
 
         // Edit comment
-        await videoPage.SearchComment_VisibleAndEdit(TestData.Video.Video_Comment_Search, TestData.Video.New_Comment);
+        await videoPage.SearchComment_VisibleAndEdit(TestData.Video.Video_Comment_Edit, TestData.Video.New_Comment, mashupId, title);
         const updatedCommentLocator = page.locator(VideoPageSelectors.Comment_Text(TestData.Video.New_Comment));
         await assert.toBeVisible(updatedCommentLocator, `Updated comment: "${TestData.Video.New_Comment}"`);
 
         // Delete comment
-        await videoPage.SearchComment_VisibleAndDelete(TestData.Video.Video_Comment_Delete);
-        const deletedCommentLocator = page.locator(VideoPageSelectors.Comment_Text(TestData.Video.Video_Comment_Delete));
-        await expect(deletedCommentLocator, `Deleted comment "${TestData.Video.Video_Comment_Delete}" should be gone`).toHaveCount(0);
-
+        await videoPage.SearchComment_VisibleAndDelete(TestData.Video.Video_Comment_To_Delete, mashupId, title);
+        const deletedCommentLocator = page.locator(VideoPageSelectors.Comment_Text(TestData.Video.Video_Comment_To_Delete));
+        await expect(deletedCommentLocator, `Deleted comment "${TestData.Video.Video_Comment_To_Delete}" should be gone`).toHaveCount(1);
 
         await homePage.logout();
     });
