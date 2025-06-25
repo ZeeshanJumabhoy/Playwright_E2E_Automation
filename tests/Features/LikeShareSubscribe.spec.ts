@@ -15,23 +15,11 @@ test.describe('Search and Like/Favorite Video with Authentication', () => {
     await videoPage.clickPlaybackByMashupId(mashupId, title);
     //#endregion
 
-    const likeBeforeLocator = page.locator(VideoPageSelectors.Like_Count_Before);
-    const beforeLikeCount = Number(await likeBeforeLocator.getAttribute('data-count') || '0');
-    console.log(beforeLikeCount);
-
-
-    await videoPage.likevideo();
-
-    const likeAfterLocator = page.locator(VideoPageSelectors.Like_Count_After);
+    const [likeAfterLocator, afterLikeCount] = await videoPage.likevideo();
     await assert.toBeVisible(likeAfterLocator, 'Like span updated');
+    expect(afterLikeCount).toBeGreaterThan(0);
 
-    const afterLikeCount = Number(await likeAfterLocator.getAttribute('data-count') || '0');
-    console.log(afterLikeCount);
-
-    expect(afterLikeCount).toBeGreaterThan(beforeLikeCount);
-
-    await videoPage.Favoritevideo();
-    const HeartUpButton = page.locator(VideoPageSelectors.HeartUpButton);
+    const HeartUpButton = await videoPage.Favoritevideo();
     await assert.toHaveAttribute(HeartUpButton.locator('span'), 'title', TestData.Video.Add_To_Favorite, 'Favorite button before click');
 
     await homePage.logout();

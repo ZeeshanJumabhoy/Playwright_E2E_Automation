@@ -17,6 +17,7 @@ export class Video {
     private readonly buttonLocator: Locator;
     private readonly playvideo: Locator;
     private readonly videohyperlink: Locator;
+    private readonly likeCountLocator: Locator;
 
     constructor(page: Page) {
 
@@ -30,6 +31,7 @@ export class Video {
         this.buttonLocator = page.locator(VideoPageSelectors.Comment_Button);
         this.playvideo = page.locator(VideoPageSelectors.Play_Video);
         this.videohyperlink = page.locator(VideoPageSelectors.Video_Hyper);
+        this.likeCountLocator = page.locator(VideoPageSelectors.Like_Count_After);
     }
 
     async clickPlaybackByMashupId(mashupId: string, title: string): Promise<void> {
@@ -46,13 +48,16 @@ export class Video {
     //     return await this.isElementVisible(locator);
     // }
 
-    async likevideo(): Promise<void> {
+    async likevideo(): Promise<[Locator, number]> {
         await this.basePage.clickElement(this.thumbsUp, 'Liking the video');
-
+        const countStr = await this.likeCountLocator.getAttribute('data-count') || '0';
+        const count = Number(countStr);
+        return [this.likeCountLocator, count];
     }
 
-    async Favoritevideo(): Promise<void> {
+    async Favoritevideo(): Promise<Locator> {
         await this.basePage.clickElement(this.heartUp, 'Favorite the video');
+        return this.page.locator(VideoPageSelectors.HeartUpButton);
     }
 
     async CommentingOnVideo(comment: string , mashupId: string, title: string): Promise<void> {

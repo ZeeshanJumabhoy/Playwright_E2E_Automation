@@ -1,7 +1,6 @@
 export const VideoPageSelectors = {
     Video_Heading: (text: string) => `[data-e2e-div="${text}"]`,
     ThumbsUpButton: 'button[data-e2e-link="MashupDetailLikeMedia"]',
-    Like_Count_Before: 'span[data-e2e-span*="MashupDetailLikeMedia"] >>nth=0',
     Like_Count_After: 'span[data-e2e-span*="MashupDetailUnlikeMedia"] >>nth=0',
     HeartUpButton: 'a[data-e2e-link="MashupDetailAddToFavourite"]',
     comment: 'textarea[data-e2e-textarea="commentContent"]',
