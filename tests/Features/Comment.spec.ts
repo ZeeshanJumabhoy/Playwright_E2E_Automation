@@ -1,8 +1,8 @@
 import { test, expect } from '../../utils/fixtures'; // includes homePage, loginPage, videoPage, assert
 import { TestData } from '../../data/TestData';
-import { SharedSelectors } from '../../constants/SharedSelectors';
-import { HomePageSelectors } from '../../constants/HomePageSelectors';
-import { VideoPageSelectors } from '../../constants/VideoPageSelectors';
+import { SharedSelectors } from '../../Locators/SharedSelectors';
+import { HomePageSelectors } from '../../Locators/HomePageSelectors';
+import { VideoPageSelectors } from '../../Locators/VideoPageSelectors';
 
 test.describe('Searching, commenting and editing/deleting comment on video', () => {
     test('should play video, add/edit/delete comment', async ({ page, homePage, loginPage, videoPage, assert, mediaPage, controlPanel }) => {

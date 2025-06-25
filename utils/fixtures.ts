@@ -1,12 +1,12 @@
 import { test as base, expect } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
-import { LoginPage } from '../pages/LoginPage';
-import { Video } from '../pages/VideoPage';
-import { Media } from '../pages/MediaPage';
-import { Control_Panel } from '../pages/ControlPanel';
+import { HomePage } from '../pages/HomePageService';
+import { LoginPage } from '../pages/LoginPageService';
+import { Video } from '../pages/VideoPageService';
+import { Media } from '../pages/MediaPageService';
+import { Control_Panel } from '../pages/ControlPanelPageService';
 import { AssertHelper } from '../utils/AssertHelper';
 import { TestData } from '../data/TestData';
-import { MashupPage } from '../pages/MashupPage';
+import { MashupPage } from '../pages/MashupPageService';
 
 type MyFixtures = {
   homePage: HomePage;

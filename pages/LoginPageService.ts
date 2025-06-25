@@ -1,7 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from '../base/BasePage';
-import { LoginPageSelectors } from '../constants/LoginPageSelectors';
-import { SharedSelectors } from '../constants/SharedSelectors';
+import { LoginPageSelectors } from '../Locators/LoginPageSelectors';
+import { SharedSelectors } from '../Locators/SharedSelectors';
 
 export class LoginPage {
     private readonly page: Page;

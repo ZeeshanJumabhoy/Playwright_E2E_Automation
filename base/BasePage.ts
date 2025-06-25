@@ -1,7 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 import { Logger } from '../utils/Logger';
 import { WaitHelper } from '../utils/WaitHelper';
-import { AppConstants } from '../constants/AppConstants';
+import { AppConstants } from '../Locators/AppConstants';
 
 export class BasePage {
     protected readonly page: Page;
@@ -46,30 +46,5 @@ export class BasePage {
         } catch {
             return false;
         }
-    }
-
-    public async getMashupDetails(parentSelector: string, attributeName: string): Promise<{ mashupId: string; title: string }> {
-        const parentLocator = this.page.locator(parentSelector).first();
-        //await this.waitHelper.waitForElementToBeVisible(parentLocator);
-
-        // Retry getting mashupId attribute
-        const maxRetries = 5;
-        let mashupId: string | null = null;
-
-        for (let i = 0; i < maxRetries; i++) {
-            mashupId = await parentLocator.getAttribute(attributeName);
-            if (mashupId) break;
-            await this.waitHelper.waitWithTimeout(500);
-        }
-
-        // Get the title from the child anchor element inside the parent container
-        const titleLocator = parentLocator.locator('[data-e2e-link="fileTitle"]');
-       // await this.waitHelper.waitForElementToBeVisible(titleLocator);
-        const title = (await titleLocator.textContent())?.trim() ?? 'Unknown Title';
-
-        return {
-            mashupId: mashupId ?? '012',
-            title
-        };
     }
 }

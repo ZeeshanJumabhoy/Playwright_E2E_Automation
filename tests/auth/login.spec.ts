@@ -1,6 +1,6 @@
 import { test, expect } from '../../utils/fixtures'; 
 import { TestData } from '../../data/TestData';
-import { SharedSelectors } from '../../constants/SharedSelectors';
+import { SharedSelectors } from '../../Locators/SharedSelectors';
 
 test.describe('Authentication Flow', () => {
   test('should pass login and logout flow', async ({ page, homePage, loginPage, assert }) => {

@@ -1,8 +1,8 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from '../base/BasePage';
-import { VideoPageSelectors } from '../constants/VideoPageSelectors';
+import { VideoPageSelectors } from '../Locators/VideoPageSelectors';
 import { TestData } from '../data/TestData';
-import { HomePage } from './HomePage';
+import { HomePage } from './HomePageService';
 import { AssertHelper } from '../utils/AssertHelper';
 
 export class Video {

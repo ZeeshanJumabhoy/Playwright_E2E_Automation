@@ -1,7 +1,6 @@
 import { test, expect } from '../../utils/fixtures';
 import { TestData } from '../../data/TestData';
-import { VideoPageSelectors } from '../../constants/VideoPageSelectors';
-import { HomePageSelectors } from '../../constants/HomePageSelectors';
+import { VideoPageSelectors } from '../../Locators/VideoPageSelectors';
 
 test.describe('Searching and playing video with Authentication', () => {
     test('should login, search, play and verify video', async ({ page, homePage, loginPage, videoPage, assert, mediaPage, controlPanel }) => {

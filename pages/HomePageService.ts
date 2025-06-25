@@ -1,8 +1,8 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from '../base/BasePage';
-import { AppConstants } from '../constants/AppConstants';
-import { SharedSelectors } from '../constants/SharedSelectors';
-import { HomePageSelectors } from '../constants/HomePageSelectors';
+import { AppConstants } from '../Locators/AppConstants';
+import { SharedSelectors } from '../Locators/SharedSelectors';
+import { HomePageSelectors } from '../Locators/HomePageSelectors';
 import { TestData } from '../data/TestData';
 
 export class HomePage {

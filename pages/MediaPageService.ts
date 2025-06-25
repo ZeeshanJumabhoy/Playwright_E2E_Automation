@@ -1,10 +1,10 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from '../base/BasePage';
-import { HomePageSelectors } from '../constants/HomePageSelectors';
-import { SharedSelectors } from '../constants/SharedSelectors';
+import { HomePageSelectors } from '../Locators/HomePageSelectors';
+import { SharedSelectors } from '../Locators/SharedSelectors';
 import { WaitHelper } from '../utils/WaitHelper';
-import { MashupPage } from './MashupPage';
-import { HomePage } from './HomePage';
+import { MashupPage } from './MashupPageService';
+import { HomePage } from './HomePageService';
 
 export class Media {
 

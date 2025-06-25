@@ -1,10 +1,8 @@
 import { test, expect } from '../../utils/fixtures';
 import { TestData } from '../../data/TestData';
-import { HomePageSelectors } from '../../constants/HomePageSelectors';
-import { VideoPageSelectors } from '../../constants/VideoPageSelectors';
 
 test.describe('Search and Like/Favorite Video with Authentication', () => {
-  test('should search, play, like, and favorite a video', async ({ page, homePage, loginPage, videoPage, assert, mediaPage, controlPanel }) => {
+  test('should search, play, like, and favorite a video', async ({ homePage, loginPage, videoPage, assert, mediaPage, controlPanel }) => {
 
     await loginPage.login(TestData.USER.email, TestData.USER.password);
 

@@ -4,14 +4,11 @@ import { TestData } from '../../data/TestData';
 test.describe('Uploading Media, Searching and Playing it', () => {
 
   test('Should Upload the video and searching the video', async ({
-    page,
     homePage,
     loginPage,
     mediaPage,
     videoPage,
     controlPanel,
-    mashupPage,
-    assert
   }) => {
 
     await loginPage.login(TestData.USER.email, TestData.USER.password);

@@ -1,8 +1,8 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from '../base/BasePage';
-import { SharedSelectors } from '../constants/SharedSelectors';
-import { HomePageSelectors } from '../constants/HomePageSelectors';
-import { HomePage } from './HomePage';
+import { SharedSelectors } from '../Locators/SharedSelectors';
+import { HomePageSelectors } from '../Locators/HomePageSelectors';
+import { HomePage } from './HomePageService';
 
 export class Control_Panel {
     private readonly page: Page;
