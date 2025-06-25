@@ -4,10 +4,10 @@ export default defineConfig({
     testDir: './tests',
     timeout: 60000,
     expect: {
-        timeout: 10000
+        timeout: 20000
     },
-    fullyParallel: false, // Keep false for now since you're using beforeAll
-    retries: 1,
+    fullyParallel: true, // Keep false for now since you're using beforeAll
+    retries: 0,
     //workers: 1,
     reporter: [
         ['html', { outputFolder: 'reports/html-report' }],
@@ -19,8 +19,8 @@ export default defineConfig({
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
         headless: false, // Set to true for CI/CD
-        actionTimeout: 15000,
-        navigationTimeout: 30000 ,
+        actionTimeout: 20000,
+        navigationTimeout: 60000 ,
         launchOptions:{
             slowMo: 1000
         }

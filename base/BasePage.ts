@@ -39,7 +39,7 @@ export class BasePage {
         return await this.page.title();
     }
 
-    protected async isElementVisible(locator: Locator, timeout: number = 3000): Promise<boolean> {
+    public async isElementVisible(locator: Locator, timeout: number = 3000): Promise<boolean> {
         try {
             await locator.waitFor({ state: 'visible', timeout });
             return true;
@@ -47,4 +47,35 @@ export class BasePage {
             return false;
         }
     }
+
+    public async getMashupDetails(parentSelector: string, attributeName: string, toastSelector: string = '#toast-container'): Promise<{ mashupId: string; title: string }> {
+        const toastLocator = this.page.locator(toastSelector);
+        await this.waitHelper.waitForElementToBeVisible(toastLocator);
+        await this.waitHelper.waitWithTimeout(1000);
+
+        const parentLocator = this.page.locator(parentSelector).first();
+        //await this.waitHelper.waitForElementToBeVisible(parentLocator);
+
+        // Retry getting mashupId attribute
+        const maxRetries = 5;
+        let mashupId: string | null = null;
+
+        for (let i = 0; i < maxRetries; i++) {
+            mashupId = await parentLocator.getAttribute(attributeName);
+            if (mashupId) break;
+            await this.waitHelper.waitWithTimeout(500);
+        }
+
+        // Get the title from the child anchor element inside the parent container
+        const titleLocator = parentLocator.locator('[data-e2e-link="fileTitle"]');
+       // await this.waitHelper.waitForElementToBeVisible(titleLocator);
+        const title = (await titleLocator.textContent())?.trim() ?? 'Unknown Title';
+
+        return {
+            mashupId: mashupId ?? '012',
+            title
+        };
+    }
+
+
 }

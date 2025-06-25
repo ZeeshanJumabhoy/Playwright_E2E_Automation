@@ -3,6 +3,7 @@ import { BasePage } from '../base/BasePage';
 import { AppConstants } from '../constants/AppConstants';
 import { SharedSelectors } from '../constants/SharedSelectors';
 import { HomePageSelectors } from '../constants/HomePageSelectors';
+import { TestData } from '../data/TestData';
 
 export class HomePage {
 
@@ -52,9 +53,10 @@ export class HomePage {
     //     return await this.isElementVisible(this.profileToggle);
     // }
 
-    async Search(search: string): Promise<void> {
+    async Search(search: string): Promise<Locator> {
         await this.basePage.fillInput(this.inputSearchbar, search, 'Entering the input to search the video');
         await this.basePage.clickElement(this.clickSearchbutton, 'Clicking the search button');
+        return this.page.locator(HomePageSelectors.Video_Link(TestData.Video.VideoPartialtext));
     }
 
     // async isVideoVisible(titlePart: string, index: number = 0): Promise<boolean> {

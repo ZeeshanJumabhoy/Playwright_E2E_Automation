@@ -1,5 +1,5 @@
 export const VideoPageSelectors = {
-    Video_Heading: (text: string) => `h3:has-text("${text}")`,
+    Video_Heading: (text: string) => `[data-e2e-div="${text}"]`,
     ThumbsUpButton: 'button[data-e2e-link="MashupDetailLikeMedia"]',
     Like_Count_Before: 'span[data-e2e-span*="MashupDetailLikeMedia"] >>nth=0',
     Like_Count_After: 'span[data-e2e-span*="MashupDetailUnlikeMedia"] >>nth=0',
@@ -7,7 +7,7 @@ export const VideoPageSelectors = {
     comment: 'textarea[data-e2e-textarea="commentContent"]',
     Comment_Button: 'button[data-e2e-btn="Post"]',
     Comment_Section: 'div[data-e2e-div="allComments"]',
-    Comment_Text: (text: string) => `div[data-e2e-div="${text}"]`,
+    Comment_Text: (text: string) => `div[data-e2e-div="${text}"] >>nth=0`,
     Edit_Button:'button[data-e2e-link="editComment"]',
     Update_Button: 'button[data-e2e-btn="Update"]',
     Delete_Button: 'button[data-e2e-link="deleteComment"]',

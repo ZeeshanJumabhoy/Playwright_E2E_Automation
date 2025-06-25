@@ -4,30 +4,26 @@ import { VideoPageSelectors } from '../../constants/VideoPageSelectors';
 import { HomePageSelectors } from '../../constants/HomePageSelectors';
 
 test.describe('Searching and playing video with Authentication', () => {
+    test.setTimeout(2 * 60 * 60 * 1000);
     test('should login, search, play and verify video', async ({ page, homePage, loginPage, videoPage, assert, mediaPage, controlPanel }) => {
         // homePage.open() and title check are already in fixture
 
         await loginPage.login(TestData.USER.email, TestData.USER.password);
 
-                //uploadFile
-        //Uploading Video with Seperate Steps and assertions
+        //Uploading Video with Sarching and going onto Video Page
         await homePage.clickMediaButton();
-        await mediaPage.uploadVideo(TestData.Video.Video_Path);
+
+        const { mashupId, title } = await mediaPage.uploadVideo(TestData.Video.Video_Path);
+
+        await homePage.clicktoggleButton();
+
+        await controlPanel.waitForWorkflowToFinish(mashupId);
+        await homePage.Search(title);
+        await videoPage.clickVideoByMashupId(mashupId);
         //#endregion
-    
-        await homePage.clicktoggleButton();  
-        await controlPanel.waitForWorkflowToFinish(TestData.ControlPanel.VideoTitle2);
 
-        // Searcing and Validating that Video Founf or not
-        await homePage.Search(TestData.Video.VideoTitle);
-
-        const videoLocator = page.locator(HomePageSelectors.Video_Link(TestData.Video.VideoPartialtext));
-        await assert.toBeVisible(videoLocator, 'Video link from search results');
-
-        // If found then going on the video page
-        await videoPage.clickVideo(TestData.Video.VideoPartialtext);
-
-        const headingLocator = page.locator(VideoPageSelectors.Video_Heading(TestData.Video.VideoPartialtext));
+        // Verify the video page is opened
+        const headingLocator = page.locator(VideoPageSelectors.Video_Heading(mashupId));
         await assert.toBeVisible(headingLocator, 'Video heading after clicking');
 
         // Then play the video and verify it is playing

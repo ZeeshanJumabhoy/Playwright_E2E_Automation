@@ -43,13 +43,12 @@ export class Control_Panel {
         this.basePage.logger.info(`Media page loaded with correct title: ${expectedTitle}`);
     }
 
-
     //Chnage to made in thsi as well
-    async waitForWorkflowToFinish(videoTitle: string): Promise<void> {
+    async waitForWorkflowToFinish(objectid: string): Promise<void> {
         await this.basePage.clickElement(this.controlPanelButton, 'Control Panel Button');
         await this.basePage.clickElement(this.workflowsButton, 'Workflows Button');
 
-        this.basePage.logger.info(`Waiting for video "${videoTitle}" to finish processing...`);
+        this.basePage.logger.info(`Waiting for video "${objectid}" to finish processing...`);
     
         const pollingInterval = 5000; // 5 seconds
         const maxRetries = 1000;
@@ -58,11 +57,11 @@ export class Control_Panel {
             await this.refreshbutton.click(); 
             await this.page.waitForTimeout(1000);
     
-            const rowLocator = this.page.locator(SharedSelectors.CONTROL_PANEL.Video_row_locator(videoTitle));
+            const rowLocator = this.page.locator(SharedSelectors.CONTROL_PANEL.Video_row_locator(objectid));
             const isRowVisible = await rowLocator.isVisible();
     
             if (!isRowVisible) {
-                this.basePage.logger.warn(`Video "${videoTitle}" not found in table. Retrying in ${pollingInterval / 1000}s...`);
+                this.basePage.logger.warn(`Video "${objectid}" not found in table. Retrying in ${pollingInterval / 1000}s...`);
                 await this.page.waitForTimeout(pollingInterval);
                 continue;
             }
@@ -76,18 +75,18 @@ export class Control_Panel {
             this.basePage.logger.info(`Check #${attempt} - State: "${stateText?.trim()}", Progress: ${percentageText?.trim()}`);
     
             if (stateText?.trim() === 'Finished') {
-                this.basePage.logger.info(`Video "${videoTitle}" has finished processing.`);
+                this.basePage.logger.info(`Video "${objectid}" has finished processing.`);
                 return;
             }
     
             if (stateText?.trim() === 'Failed') {
-                throw new Error(`Video "${videoTitle}" failed to process.`);
+                throw new Error(`Video "${objectid}" failed to process.`);
             }
     
             await this.page.waitForTimeout(pollingInterval);
         }
     
-        throw new Error(`Video "${videoTitle}" did not finish processing after ${maxRetries * (pollingInterval / 1000)} seconds`);
+        throw new Error(`Video "${objectid}" did not finish processing after ${maxRetries * (pollingInterval / 1000)} seconds`);
     }
     
 }

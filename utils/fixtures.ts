@@ -1,11 +1,12 @@
 import { test as base, expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
 import { LoginPage } from '../pages/LoginPage';
-import { Video } from '../pages/Video';
-import { Media } from '../pages/Media';
+import { Video } from '../pages/VideoPage';
+import { Media } from '../pages/MediaPage';
 import { Control_Panel } from '../pages/ControlPanel';
 import { AssertHelper } from '../utils/AssertHelper';
 import { TestData } from '../data/TestData';
+import { MashupPage } from '../pages/MashupPage';
 
 type MyFixtures = {
   homePage: HomePage;
@@ -13,6 +14,7 @@ type MyFixtures = {
   videoPage: Video;
   mediaPage: Media;
   controlPanel: Control_Panel;
+  mashupPage:MashupPage
   assert: AssertHelper;
 };
 
@@ -34,6 +36,9 @@ export const test = base.extend<MyFixtures>({
   },
   controlPanel: async ({ page }, use) => {
     await use(new Control_Panel(page));
+  },
+  mashupPage: async ({ page }, use) => {
+    await use(new MashupPage(page));
   },
   assert: async ({ page }, use) => {
     await use(new AssertHelper(page));

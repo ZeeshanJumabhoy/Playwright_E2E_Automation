@@ -1,18 +1,17 @@
-import { test, expect } from '../../utils/fixtures'; 
+import { test, expect } from '../../utils/fixtures';
 import { TestData } from '../../data/TestData';
-import { VideoPageSelectors } from '../../constants/VideoPageSelectors';
-import { HomePageSelectors } from '../../constants/HomePageSelectors';
 
 test.describe('Uploading Media, Searching and Playing it', () => {
   test.setTimeout(2 * 60 * 60 * 1000);
 
-  test('should pass login and logout flow', async ({
+  test('Should Upload the video and searching the video', async ({
     page,
     homePage,
     loginPage,
     mediaPage,
     videoPage,
     controlPanel,
+    mashupPage,
     assert
   }) => {
 
@@ -20,13 +19,15 @@ test.describe('Uploading Media, Searching and Playing it', () => {
 
 
     //Uploading Video with Seperate Steps and assertions
-     await homePage.clickMediaButton();
+    await homePage.clickMediaButton();
     // await assert.toHaveTitle(TestData.Media.expectedTitleForAddMedia);
 
     // await mediaPage.clickUploadButton();
     // await assert.toHaveTitle(TestData.Media.expectedTitleForUploadMedia);
 
-    await mediaPage.uploadVideo(TestData.Video.Video_Path);
+    const { mashupId, title } = await mediaPage.uploadVideo(TestData.Video.Video_Path);
+
+
     //#endregion
 
     await homePage.clicktoggleButton();
@@ -38,19 +39,21 @@ test.describe('Uploading Media, Searching and Playing it', () => {
     // await controlPanel.clickWorkflows();
     // await assert.toHaveTitle(TestData.ControlPanel.expectedTitleForWorkflows);
 
-    
-    await controlPanel.waitForWorkflowToFinish(TestData.ControlPanel.VideoTitle2);
+
+    await controlPanel.waitForWorkflowToFinish(mashupId);
     // Make the assert for this as well
 
-    await homePage.Search(TestData.ControlPanel.VideoTitle2);
-
-    // const videoLocator = page.locator(HomePageSelectors.Video_Link(TestData.Video.VideoPartialtext2));
+    // Searcing and Validating that Video Found or not
+    await homePage.Search(title);
+    //const videoLocator = page.locator(HomePageSelectors.Video_Link(TestData.Video.VideoPartialtext));
     // await assert.toBeVisible(videoLocator, 'Video link from search results');
 
-    await videoPage.clickVideo(TestData.Video.VideoPartialtext2);
+    // If found then going on the video page
+    await videoPage.clickVideoByMashupId(mashupId);
 
-    // const headingLocator = page.locator(VideoPageSelectors.Video_Heading(TestData.Video.VideoPartialtext2));
-    // await assert.toBeVisible(headingLocator, 'Video heading after clicking');
+    // Then play the video and verify it is playing
+    //await videoPage.playVideo();
+    //await assert.videoShouldBePlaying('Main video');
 
     await homePage.logout();
   });
