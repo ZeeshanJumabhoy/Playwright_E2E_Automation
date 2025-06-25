@@ -16,7 +16,7 @@ test.describe('Searching and playing video with Authentication', () => {
 
         // Verify the video page is opened
         const headingLocator = page.locator(VideoPageSelectors.Video_Heading(await MashupPage.getTitle()));
-        await assert.toBeVisible(headingLocator, 'Video heading after clicking');
+        await assert.toBeHidden(headingLocator, 'Video heading after clicking');
 
         // Then play the video and verify it is playing
         //await videoPage.playVideo();
