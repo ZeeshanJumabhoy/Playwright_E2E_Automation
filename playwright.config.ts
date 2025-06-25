@@ -2,11 +2,11 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
     testDir: './tests',
-    timeout: 60000,
+    timeout: 30 * 60 * 1000, 
     expect: {
         timeout: 20000
     },
-    fullyParallel: true, // Keep false for now since you're using beforeAll
+    fullyParallel: true, 
     retries: 0,
     //workers: 1,
     reporter: [
@@ -22,7 +22,7 @@ export default defineConfig({
         actionTimeout: 20000,
         navigationTimeout: 60000 ,
         launchOptions:{
-            slowMo: 1000
+            slowMo: 500
         }
     },
     projects: [

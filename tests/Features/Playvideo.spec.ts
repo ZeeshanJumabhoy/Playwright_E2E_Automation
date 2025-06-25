@@ -4,7 +4,6 @@ import { VideoPageSelectors } from '../../constants/VideoPageSelectors';
 import { HomePageSelectors } from '../../constants/HomePageSelectors';
 
 test.describe('Searching and playing video with Authentication', () => {
-    test.setTimeout(2 * 60 * 60 * 1000);
     test('should login, search, play and verify video', async ({ page, homePage, loginPage, videoPage, assert, mediaPage, controlPanel }) => {
         // homePage.open() and title check are already in fixture
 

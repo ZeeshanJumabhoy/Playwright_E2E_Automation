@@ -4,7 +4,6 @@ import { HomePageSelectors } from '../../constants/HomePageSelectors';
 import { VideoPageSelectors } from '../../constants/VideoPageSelectors';
 
 test.describe('Search and Like/Favorite Video with Authentication', () => {
-  test.setTimeout(2 * 60 * 60 * 1000);
   test('should search, play, like, and favorite a video', async ({ page, homePage, loginPage, videoPage, assert, mediaPage, controlPanel }) => {
 
     await loginPage.login(TestData.USER.email, TestData.USER.password);

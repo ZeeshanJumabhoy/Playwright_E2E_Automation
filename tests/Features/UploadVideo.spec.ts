@@ -2,7 +2,6 @@ import { test, expect } from '../../utils/fixtures';
 import { TestData } from '../../data/TestData';
 
 test.describe('Uploading Media, Searching and Playing it', () => {
-  test.setTimeout(2 * 60 * 60 * 1000);
 
   test('Should Upload the video and searching the video', async ({
     page,

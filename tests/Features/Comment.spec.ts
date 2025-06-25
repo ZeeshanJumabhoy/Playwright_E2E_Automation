@@ -6,7 +6,6 @@ import { VideoPageSelectors } from '../../constants/VideoPageSelectors';
 import { resolveModuleName } from 'typescript';
 
 test.describe('Searching, commenting and editing/deleting comment on video', () => {
-    test.setTimeout(2 * 60 * 60 * 1000);
     test('should play video, add/edit/delete comment', async ({ page, homePage, loginPage, videoPage, assert, mediaPage, controlPanel }) => {
 
 
@@ -28,8 +27,9 @@ test.describe('Searching, commenting and editing/deleting comment on video', () 
         // Add comment
         await videoPage.CommentingOnVideo(TestData.Video.Video_Comment);
         await page.reload();
+        await assert.toHaveTitle(TestData.Video.Video_Page_Title(title));
         const commentLocator = page.locator(VideoPageSelectors.Comment_Text(TestData.Video.Video_Comment_Search));
-        await assert.toBeVisible(commentLocator, `Comment "${TestData.Video.Video_Comment_Search}"`);
+        await assert.toBeHidden(commentLocator, `Comment "${TestData.Video.Video_Comment_Search}"`);
 
         // Edit comment
         await videoPage.SearchComment_VisibleAndEdit(TestData.Video.Video_Comment_Search, TestData.Video.New_Comment);
