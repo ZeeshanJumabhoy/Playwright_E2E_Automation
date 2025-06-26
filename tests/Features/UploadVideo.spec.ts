@@ -23,7 +23,5 @@ test.describe('Uploading Media, Searching and Playing it', () => {
     // Then play the video and verify it is playing
     //await videoPage.playVideo();
     //await assert.videoShouldBePlaying('Main video');
-
-    await homePage.logout();
   });
 });

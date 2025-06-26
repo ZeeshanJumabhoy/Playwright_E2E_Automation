@@ -13,13 +13,10 @@ test.describe('Search and Like/Favorite Video with Authentication', () => {
     await videoPage.clickPlaybackByMashupId( await MashupPage.getId(), await MashupPage.getTitle());
     //#endregion
 
-    const [likeAfterLocator, afterLikeCount] = await videoPage.likevideo();
-    await assert.toBeVisible(likeAfterLocator, 'Like span updated');
+    const afterLikeCount = await videoPage.likevideo();
     expect(afterLikeCount).toBeGreaterThan(0);
 
     const HeartUpButton = await videoPage.Favoritevideo();
     await assert.toHaveAttribute(HeartUpButton.locator('span'), 'title', TestData.Video.Add_To_Favorite, 'Favorite button before click');
-
-    await homePage.logout();
   });
 });

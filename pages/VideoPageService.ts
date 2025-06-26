@@ -47,11 +47,11 @@ export class Video {
         const anchor = container.locator(this.videohyperlink);
         await this.basePage.clickElement(anchor, `Clicking on video with mashupId ${mashupId}`);
     }
-    async likevideo(): Promise<[Locator, number]> {
+    async likevideo(): Promise<number> {
         await this.basePage.clickElement(this.thumbsUp, 'Liking the video');
         const countStr = await this.likeCountLocator.getAttribute('data-count') || '0';
         const count = Number(countStr);
-        return [this.likeCountLocator, count];
+        return count;
     }
     
     async Favoritevideo(): Promise<Locator> {

@@ -18,7 +18,6 @@ test.describe('Searching, commenting and editing/deleting comment on video', () 
         // Add comment
         await videoPage.CommentingOnVideo(TestData.Video.Video_Comment, await MashupPage.getId(), await MashupPage.getTitle());
         const commentLocator = page.locator(VideoPageSelectors.Comment_Text(TestData.Video.Video_Comment));
-        console.log(commentLocator)
         await assert.toBeVisible(commentLocator, `Comment "${TestData.Video.Video_Comment}"`);
 
         // Edit comment
