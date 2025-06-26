@@ -66,7 +66,7 @@ export class Media {
                 await expect(warningLocator.first()).toBeHidden({ timeout: 20000 });
                 this.basePage.logger.info('File already exists. Clicking Keep button...');
                 await this.basePage.clickElement(this.keepButton, "Clicking the keep button");
-                await this.waitHelper.waitWithTimeout(500);
+                //await this.waitHelper.waitWithTimeout(500);
                 await this.waitHelper.waitForElementToBeVisible(this.toast_locator);
             } catch (expectError) {
                 throw new Error(

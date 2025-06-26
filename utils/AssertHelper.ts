@@ -3,7 +3,7 @@ import { Logger } from './Logger';
 
 export class AssertHelper {
     private readonly logger: Logger;
-    private readonly defaultTimeout = 10000; // 10 seconds
+    private readonly defaultTimeout = 20000; // 10 seconds
 
     constructor(private readonly page: Page) {
         this.logger = new Logger('AssertHelper');

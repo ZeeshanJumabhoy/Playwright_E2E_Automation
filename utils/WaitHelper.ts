@@ -17,6 +17,8 @@ export class WaitHelper {
         await locator.waitFor({ state: 'hidden', timeout });
     }
 
+
+    // Is it to remove
     async waitWithTimeout(ms: number): Promise<void> {
         await this.page.waitForTimeout(ms);
     }

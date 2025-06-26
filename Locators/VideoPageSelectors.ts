@@ -1,7 +1,7 @@
 export const VideoPageSelectors = {
     Video_Heading: (text: string) => `[data-e2e-div="${text}"]`,
     ThumbsUpButton: 'button[data-e2e-link="MashupDetailLikeMedia"]',
-    Like_Count_After: 'span[data-e2e-span*="MashupDetailUnlikeMedia"] >>nth=0',
+    Like_Count_After: 'span[data-e2e-span*="MashupDetailUnlikeMedia"] >>nth=1',
     HeartUpButton: 'a[data-e2e-link="MashupDetailAddToFavourite"]',
     comment: 'textarea[data-e2e-textarea="commentContent"]',
     Comment_Button: 'button[data-e2e-btn="Post"]',
@@ -15,5 +15,3 @@ export const VideoPageSelectors = {
     Video_Hyper: 'a[href*="/play/video/"]>>nth=0',
 
   } as const;
-
-  

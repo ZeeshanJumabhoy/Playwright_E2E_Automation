@@ -45,7 +45,6 @@ export class MashupPage {
     
     public async getMashupDetails(parentSelector: string, attributeName: string): Promise<{ mashupId: string; title: string }> {
         const parentLocator = this.page.locator(parentSelector).first();
-        //await this.waitHelper.waitForElementToBeVisible(parentLocator);
 
         // Retry getting mashupId attribute
         const maxRetries = 5;
@@ -54,7 +53,6 @@ export class MashupPage {
         for (let i = 0; i < maxRetries; i++) {
             mashupId = await parentLocator.getAttribute(attributeName);
             if (mashupId) break;
-            await this.waitHelper.waitWithTimeout(500);
         }
 
         // Get the title from the child anchor element inside the parent container

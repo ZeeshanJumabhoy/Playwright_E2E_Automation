@@ -1,5 +1,5 @@
 export const HomePageSelectors = {
-    Search_INPUT: 'input[data-e2e-input="SearchForMedia"]',
+    Search_INPUT: 'input[data-e2e-input="SearchForMedia"] >> nth=0',
     Search_Button: 'button[data-e2e-btn="SearchForMediaBtn"]',
     Video_Link: (text: string) => `a:has-text("${text}") >> nth=0`,
     // To click on the media button to add media and uploading as well

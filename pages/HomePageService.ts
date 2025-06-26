@@ -31,7 +31,7 @@ export class HomePage {
 
         // Main Page
         this.inputSearchbar = this.page.locator(HomePageSelectors.Search_INPUT);
-        this.clickSearchbutton = this.page.locator(HomePageSelectors.Search_Button);
+        this.clickSearchbutton = this.page.locator(HomePageSelectors.Search_Button).nth(0);
         this.mediaButton = this.page.locator(HomePageSelectors.Add_Media);
         this.toggleButton = this.page.locator(HomePageSelectors.toggle_Button);
     }
@@ -40,63 +40,27 @@ export class HomePage {
         await this.basePage.navigateTo(AppConstants.BASE_URL);
     }
 
-    // async validateHomePageLoaded(expectedTitle: string): Promise<void> {
-    //     await expect(this.page).toHaveTitle(expectedTitle);
-    //     this.logger.info(`Home page loaded with correct title: ${expectedTitle}`);
-    // }
-
     async clickSignIn(): Promise<void> {
         await this.basePage.clickElement(this.signInButton, 'Sign In Button');
     }
 
-    // async isUserLoggedIn(): Promise<boolean> {
-    //     return await this.isElementVisible(this.profileToggle);
-    // }
-
     async Search(search: string): Promise<Locator> {
         await this.basePage.fillInput(this.inputSearchbar, search, 'Entering the input to search the video');
         await this.basePage.clickElement(this.clickSearchbutton, 'Clicking the search button');
-        return this.page.locator(HomePageSelectors.Video_Link(TestData.Video.VideoPartialtext));
+        return this.page.locator(HomePageSelectors.Video_Link(search));
     }
-
-    // async isVideoVisible(titlePart: string, index: number = 0): Promise<boolean> {
-    //     const locatorStr = Selectors.Main_PAGE.Video_Link(titlePart);
-    //     const locator = this.page.locator(locatorStr);
-    //     return await this.isElementVisible(locator);
-    // }
 
     async clickMediaButton(): Promise<void> {
         await this.basePage.waitHelper.waitForElementToBeVisible(this.mediaButton);
         await this.basePage.clickElement(this.mediaButton, 'Media Button');
     }
 
-    // async validateMediaPageLoaded(expectedTitle: string): Promise<void> {
-    //     await expect(this.page).toHaveTitle(expectedTitle);
-    //     this.logger.info(`Media page loaded with correct title: ${expectedTitle}`);
-    // }
-
     async logout(): Promise<void> {
         this.basePage.logger.info('Starting logout process');
         await this.basePage.clickElement(this.profileToggle, 'Profile Toggle Button');
-        await this.basePage.waitHelper.waitWithTimeout(AppConstants.SHORT_WAIT);
-        await this.basePage.waitHelper.waitForElementToBeVisible(this.signOutButton);
         await this.basePage.clickElement(this.signOutButton, 'Sign Out Button');
-        await this.basePage.waitHelper.waitWithTimeout(AppConstants.SHORT_WAIT);
         this.basePage.logger.info('Logout completed');
     }
-
-    // async validateLogoutSuccess(): Promise<void> {
-    //     const count = await this.signInButton.count();
-
-    //     if (count > 0) {
-    //         const signInBtn = this.signInButton.nth(0);
-    //         await expect(signInBtn).toBeVisible();
-    //         this.logger.info('Logout validation successful - Sign In button visible');
-    //     } else {
-    //         this.logger.warn('Sign In button not found after logout');
-    //         throw new Error('Logout validation failed - Sign In button not visible');
-    //     }
-    // }
 
     async clicktoggleButton(): Promise<void> {
         await this.basePage.waitHelper.waitForElementToBeVisible(this.toggleButton);
